@@ -1,4 +1,4 @@
-# Cross-platform BANTER classification of false killer whales
+# Cross-platform BANTER classification of false killer whale acoustic events
  
 ## Purpose
 Working repository for 'Considerations when applying classification models across recording platforms: A case study with Hawaiian false killer whales' to be presented at DCLDE 2024 - Rotterdam, The Netherlands
