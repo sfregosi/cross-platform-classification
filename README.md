@@ -5,6 +5,7 @@ Working repository for 'Considerations when applying classification models acros
 
 ## Links
 [Cross-plaform BANTER Classification](https://drive.google.com/drive/u/0/folders/1AWEu-Z4wjEYvwvZVuYcyZXDN4tl2QFaP) (Google Drive Folder for large data files)  
+[Team notes](https://docs.google.com/document/d/1iQLqO2aHOUdpuAUZKB0HAanaTyXcnns8tLfGeC-rzr4/edit)  
 [ClassyPc repository](https://github.com/ybarkley/ClassyPc) (Related work by Y. Barkley)  
 
 ## DCLDE Abstract
