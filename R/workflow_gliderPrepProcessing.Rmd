@@ -1,0 +1,19 @@
+---
+title: "Glider Data Prep and Processing"
+author: "selene fregosi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Overview notes
+
+Odontocete events were identified manually using LTSAs/Triton. Raw log files are located in `T:/glider_MHI_analysis/triton/wood` in subfolders by mission. 
+
+These logs were then 'collapsed' in MATLAB to combine events that were within 15 mins of one another to created a 'merged' log. The merged logs are located in `T:/glider_MHI_analysis/triton/merged_logs`. 
+
+Full glider missions were run through Pamguard using the same detection modules (click, WM, cepstrum) and general settings as the LLHARP and HICEAS data to prep for processing with `PAMpal` and `banter`. Small changes were made to account for differences in hydrophone sensitivities and the thresholds were modified to better reflect the glider noise conditions. All `.psfx` files are saved with the Pamguard runs. The Pamguard databases and binaries are stored in `T:\glider_MHI_analysis\pamguard` and original copies of each are also in the `T:\glider_MHI_analysis\pamguard_originals` folder. 
+
+The Triton merged logs and Pamguard outputs were combined using `PAMpal` to create `AcousticStudy` objects. These are saved in the `T:\glider_MHI_analysis\classification` folder: unfiltered detections in `dets`, filtered in `dets_filtered`, and parameters in `params`.
+
+
+
