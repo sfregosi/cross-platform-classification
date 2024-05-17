@@ -108,7 +108,7 @@ if (!file.exists(paramFile)){
 if (!file.exists(detsFile)){
   dets <- processPgDetections(fkwPps, mode = 'time', id = paste0(trStr),
                               grouping = logFile, 
-                              format = '%m/%d/%Y %H:%M')
+                              format = '%m/%d/%Y %H:%M:%S')
   # format = '%m/%d/%Y %H:%M:%S')
   # the time format may need to be modified depending on how the csv was made
   save(dets, file = detsFile)
