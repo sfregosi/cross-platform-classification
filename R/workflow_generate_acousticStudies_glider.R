@@ -74,11 +74,11 @@ logFile <- file.path(path_analysis, 'triton', 'merged_logs',
 
 # files to be created
 paramFile <- file.path(path_analysis, 'classification', 'params', 
-                       paste0(mission, '_params.rda'))
+                       paste0(fnStr, '_params.rda'))
 detsFile <- file.path(path_analysis, 'classification', 'dets',
-                      paste0(mission, '_dets.rda'))
+                      paste0(fnStr, '_dets.rda'))
 detsFiltFile <- file.path(path_analysis, 'classification', 'dets_filtered',
-                          paste0(mission, '_detsFilt.rda'))
+                          paste0(fnStr, '_detsFilt.rda'))
 
 # ------ PAMpal steps -----------------------------------------------------
 
@@ -106,7 +106,7 @@ if (!file.exists(paramFile)){
 # (slow so only run if doesn't exist already)
 
 if (!file.exists(detsFile)){
-  dets <- processPgDetections(fkwPps, mode = 'time', id = paste0(trStr),
+  dets <- processPgDetections(fkwPps, mode = 'time', id = mission,
                               grouping = logFile, 
                               format = '%m/%d/%Y %H:%M:%S')
   # format = '%m/%d/%Y %H:%M:%S')
@@ -130,7 +130,7 @@ if (!file.exists(detsFile)){
 # Click_Detector_3 peak > 30 & < 50, Click_Detector_4 peak > 30 & < 50, 
 # Click_Detector_5 peak > 50 & < 80
 
-source(here('R', 'functions', 'filterClicks.R'))
+source(file.path(path_llamp, 'R', 'functions', 'filterClicks.R'))
 detsFilt <- filterClicks(dets)
 
 # # additional filtering specific for LLHARP banter work
