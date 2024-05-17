@@ -16,18 +16,16 @@ editor_options:
   chunk_output_type: console
 params: 
   mission: sg639_MHI_Apr2023
-  trip: LL062 # 5 char string e.g., LL061, doesn't need quotations
-  rec: FR04_DL88 # 9 char string e.g., FR45_DL84, doesn't need quotations
   pgver: pam20207b # string e.g., pam20207b, doesn't need quotations
-  path_pg: 'Z:/llharp/analysis/pamguard' # see NB below about using drive letter
-  path_ed: '//piccrp4nas/grampus/llharp/analysis/eventDetections'
-  # calFile: '//piccrp4nas/grampus/llharp/calibration/RevN_type4_110516-07_manual.tf' # for trips LL060 onward use '//picqueenfish/psd2/crp/LLHARP/calibration/RevN_type4_110516-07_manual.tf'
+  path_pg: 'T:/glider_MHI_analysis/pamguard' # see NB below about using drive letter
+  path_dets: 'T:/glider_MHI_analysis/classification'
+  path_llamp: 'Z:/LLHARP/processingCode/llamp'
   path_to_refSpec: '//piccrp4nas/grampus/llharp/processingCode/llamp/files/reference_spectra'
   refSpecList: !r c('meanSpecGm', 'refSpecPc_LLHARP') # use !r to call r then 
   refSpecSp: !r c('Gm', 'Pc')
 ---
 
-## Trip/recorder: `r params$trip` `r params$rec`
+## Trip/recorder: `r params$misson`
 
 `r paste0("Summaries generated: ", format(Sys.time(), "%Y %b %d %H:%M %Z"))`
 
@@ -66,33 +64,24 @@ library(here)
 Set user-defined variables.
 ```{r set-vars, results = 'hide'}
 # name project
-ProjID <- 'Longline Acoustic Monitoring'
+ProjID <- 'MHI UxS Glider Project'
 
 # combine trip, recorder, pg version (all defined in YAML) to single run string
-pgRunStr <- paste0(params$pgver, '_llharp_banter_', params$trip, '_', params$rec)
-trStr <- paste0(params$trip, '_', params$rec)
-
-# select path to upper pamguard folder
-# path_pg = choose.dir(default = "", caption = "Select path to pamguard folder")
-# or predefined in YAML
-# NB using //piccrp4nas (raw network path) causes error in updateFiles(), using
-# params$drive works fine
+pgRunStr <- paste0(params$pgver, '_glider_banter_', params$mission)
 
 # define subfolder paths based on selected analysis folder and trip strings
-path_to_db <- file.path(params$path_pg, 'databases', params$trip)
-path_to_binaries <- file.path(params$path_pg, 'binaries', params$trip, pgRunStr)
+path_to_db <- file.path(params$path_pg, 'databases')
+path_to_binaries <- file.path(params$path_pg, 'binaries', pgRunStr)
 
 # assemble some file names
 # pamguard database
 dbFile <- file.path(path_to_db, paste0(pgRunStr, '.sqlite3'))
 # already processed acoustic study 'dets' file
-detsFile <- file.path(params$path_ed, 'dets', 
-                      paste0(params$pgver, '_', trStr, '_dets.rda'))
-detsFiltFile <- file.path(params$path_ed, 'dets_filtered', 
-                          paste0(params$pgver, '_', trStr, '_detsFilt.rda'))
+detsFile <- file.path(params$path_dets, 'dets', 
+                      paste0(params$pgver, '_', params$mission, '_dets.rda'))
+detsFiltFile <- file.path(params$path_dets, 'dets_filtered', 
+                          paste0(params$pgver, '_', params$mission, '_detsFilt.rda'))
 # specify calibration file
-# for LL060 onward use: '//picqueenfish/psd2/crp/LLHARP/calibration/
-#                             RevN_type4_110516-07_manual.tf'
 # calFile <- params$calFile # pull from YAML
 
 # set path to reference spectra if will be used
@@ -184,10 +173,10 @@ Source some external functions
 
 ```{r source-functions}
 
-source(here('R', 'functions', 'loadMultiBinaries.R'))
-source(here('R', 'functions', 'plotContours.R'))
-source(here('R', 'functions', 'clickSummary.R'))
-source(here('R', 'functions', 'whistleSummary.R'))
+source(file.path(params$path_llamp, 'R', 'functions', 'loadMultiBinaries.R'))
+source(file.path(params$path_llamp, 'R', 'functions', 'plotContours.R'))
+source(file.path(params$path_llamp, 'R', 'functions', 'clickSummary.R'))
+source(file.path(params$path_llamp, 'R', 'functions', 'whistleSummary.R'))
 ```
 
 ### Event summaries
@@ -216,8 +205,8 @@ for (iEvent in c(1:nEventsFilt)){
   ###### summarize clicks ######
   cl <- clickSummary(detsFilt, eventUID)
   
-  cat('\nEvent contains ', nrow(getClickData(dets[[eventUID]])), 
-      ' original clicks,', paste0('**', cl$nClicks), 'valid clicks** after',
+  cat('\nEvent contains', nrow(getClickData(dets[[eventUID]])), 
+      'original clicks,', paste0('**', cl$nClicks), 'valid clicks** after',
       'filtering.\n')
   cat('\n')
   
