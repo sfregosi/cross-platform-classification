@@ -13,7 +13,10 @@ These logs were then 'collapsed' in MATLAB to combine events that were within 15
 
 Full glider missions were run through Pamguard using the same detection modules (click, WM, cepstrum) and general settings as the LLHARP and HICEAS data to prep for processing with `PAMpal` and `banter`. Small changes were made to account for differences in hydrophone sensitivities and the thresholds were modified to better reflect the glider noise conditions. All `.psfx` files are saved with the Pamguard runs. The Pamguard databases and binaries are stored in `T:\glider_MHI_analysis\pamguard` and original copies of each are also in the `T:\glider_MHI_analysis\pamguard_originals` folder. 
 
-The Triton merged logs and Pamguard outputs were combined using `PAMpal` to create `AcousticStudy` objects. These are saved in the `T:\glider_MHI_analysis\classification` folder: unfiltered detections in `dets`, filtered in `dets_filtered`, and parameters in `params`.
+The Triton merged logs and Pamguard outputs were combined using `PAMpal` to create `AcousticStudy` objects (using `g1_generate_acousticStudies_glider`). These are saved in the `T:\glider_MHI_analysis\classification` folder: unfiltered detections in `dets`, filtered in `dets_filtered`, and parameters in `params`.
 
+An Event Summary Report was created for each glider mission using `g2_event_summary_report_glider.Rmd`. The output HTML was renamed with the mission information and copied to this repository's `rmd_outputs` folder and onto the server at `T:/glider_MHI_analysis/classification/event_reports`. 
+
+The filtered `AcousticStudy` was exported to a format compatible with `banter` and species were predicted on using `g3_predict_fkw_glider.R`. This process creates a `*_predictedEvents.csv` with each event and the prediction scores from BANTER. This process was initially done with the FKW vs UO BANTER model created from the HICEAS 2017 towed array data but the code has the ability to be modified to try other models. 
 
 
