@@ -34,7 +34,7 @@ library(PAMpal)
 library(tidyverse)
 
 # ------ USER DEFINED INPUTS ----------------------------------------------
-
+# define glider mission and PG version
 mission <- 'sg639_MHI_Apr2023'
 pgVer <- '20207b'
 
@@ -68,7 +68,7 @@ binDir <- file.path(path_pg, 'binaries', paste0(pgVerPrfx, '_glider_banter_',
                                                 mission))
 dbFile <- file.path(path_pg, 'databases', paste0(pgVerPrfx, '_glider_banter_', 
                                                    mission, '.sqlite3'))
-# encounter times file - phase 3 naming scheme
+# merged triton log file
 logFile <- file.path(path_analysis, 'triton', 'merged_logs', 
                           paste0(mission, '_log_merged.csv'))
 
