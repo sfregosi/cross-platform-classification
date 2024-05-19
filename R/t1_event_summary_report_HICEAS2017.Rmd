@@ -15,20 +15,15 @@ editor_options:
   # USER DEFINED PARAMS BELOW #
   chunk_output_type: console
 params: 
-  ship: 'Lasker'
+  ship: 'Sette'
   path_acSt: '//piccrpnas/crp2/McCullough/PAMpal/Acoustic_Studies'
-  acStFile: '2017_HICEAS_1705_ch5.rdata' # must be loaded with readRDS
-  # path_ta: 'Q:/HICEAS_2017_TowedArray_Recording'
-  path_ta: 'Q:/Keating/BANTER_HICEAS_20190924'
-  # trip: LL061 # 5 char string e.g., LL061, doesn't need quotations
-  # rec: FR45_DL84 # 9 char string e.g., FR45_DL84, doesn't need quotations
-  # pgver: pam20207b # string e.g., pam20207b, doesn't need quotations
-  # path_pg: 'Z:/llharp/analysis/pamguard' # see NB below about using drive letter
-  # path_ed: '//piccrp4nas/grampus/llharp/analysis/eventDetections'
+  acStFile: '2017_HICEAS_1706_ch5.rdata' # must be loaded with readRDS
+  path_pg: 'Q:/Keating/BANTER_HICEAS_20190924' # path to db/binaries. Must use driver letter (not //) 
+  # path_code: 'Z:/LLHARP/processingCode/llamp' # path to code (if not using r proj/here package)
   # calFile: '//piccrp4nas/grampus/llharp/calibration/RevN_type4_110516-07_manual.tf' # for trips LL060 onward use '//picqueenfish/psd2/crp/LLHARP/calibration/RevN_type4_110516-07_manual.tf'
   path_to_refSpec: '//piccrp4nas/grampus/llharp/processingCode/llamp/files/reference_spectra'
-  refSpecList: !r c('meanSpecGm', 'meanSpecPc', 'refSpecPc_LLHARP') # use !r to call r then 
-  refSpecSp: !r c('Gm', 'Pc', 'Pc-LL')
+  refSpecList: !r c('meanSpecGm', 'refSpecPc_LLHARP', 'meanSpecPc') # use !r to call r then 
+  refSpecSp: !r c('Gm', 'Pc-LL', 'Pc')
 ---
 
 ## HICEAS 2017 towed array data: `r params$ship` - `r params$acStFile`
@@ -64,10 +59,6 @@ library(RSQLite)
 library(tuneR)
 library(here)
 
-# I don't think we need these but saving here in case
-# library(dplyr)
-# library(tcltk)
-# library(manipulate)
 ```
 
 Set user-defined variables.
@@ -76,8 +67,8 @@ Set user-defined variables.
 ProjID <- 'HICEAS 2017'
 
 # define subfolder paths to and binaries and database files
-path_to_binaries <- file.path(params$path_ta, 'Binaries', params$ship)
-path_to_db <- file.path(params$path_ta, 'Database')
+path_to_binaries <- file.path(params$path_pg, 'Binaries', params$ship)
+path_to_db <- file.path(params$path_pg, 'Database')
 
 # path to AcousticStudy files - ship specific
 if (params$ship == 'Lasker'){
@@ -106,6 +97,22 @@ Sys.setenv(TZ = 'UTC')
 # bold
 rsPalette <- c('#1b9e77', '#d95f02', '#7570b3', '#e7298a', 
                '#66a61e', '#e6ab02')
+```
+
+#### Define needed functions
+
+Source some external functions
+
+```{r source-functions}
+
+source(here('R', 'functions', 'filterClicks.R'))
+source(here('R', 'functions', 'loadMultiBinaries.R'))
+source(here('R', 'functions', 'plotContours.R'))
+source(here('R', 'functions', 'clickSummary.R'))
+source(here('R', 'functions', 'whistleSummary.R'))
+
+# if not using Rproj/here package use:
+# source(file.path(params$path_code, 'R', 'functions', 'loadMultiBinaries.R'))
 ```
 
 #### Load and prep AcousticStudies
@@ -139,9 +146,7 @@ nEvents <- length(names(events(dets)))
 # (this is slow...)
 dets <- PAMpal::updateFiles(dets, bin = path_to_binaries, db = path_to_db)
 
-
 # filter AcousticStudy
-source(here('R', 'functions', 'filterClicks.R'))
 detsFilt <- filterClicks(dets)
 
 # number of events may change after filtering (all clicks may be filtered out)
@@ -171,18 +176,6 @@ if (!is.null(refSpecList)){
   }
 }
 
-```
-
-#### Define needed functions
-
-Source some external functions
-
-```{r source-functions}
-
-source(here('R', 'functions', 'loadMultiBinaries.R'))
-source(here('R', 'functions', 'plotContours.R'))
-source(here('R', 'functions', 'clickSummary.R'))
-source(here('R', 'functions', 'whistleSummary.R'))
 ```
 
 ### Event summaries
