@@ -35,7 +35,7 @@ library(tidyverse)
 
 # ------ USER DEFINED INPUTS ----------------------------------------------
 # define glider mission and PG version
-mission <- 'sg639_MHI_Apr2023'
+mission <- 'sg639_MHI_Apr2022'
 pgVer <- '20207b'
 
 # define transfer function
@@ -130,17 +130,8 @@ if (!file.exists(detsFile)){
 # Click_Detector_3 peak > 30 & < 50, Click_Detector_4 peak > 30 & < 50, 
 # Click_Detector_5 peak > 50 & < 80
 
-source(file.path(path_llamp, 'R', 'functions', 'filterClicks.R'))
+source(here('R', 'functions', 'filterClicks.R'))
 detsFilt <- filterClicks(dets)
-
-# # additional filtering specific for LLHARP banter work
-# detectorList <- unique(getClickData(detsFilt)$detectorName)
-# for (cd in 1:length(detectorList)){  
-#   # set detector to filter 
-#   dtf <- detectorList[cd]
-#   # remove clicks with peak to peak level < 110
-#   detsFilt <- filter(detsFilt, (detectorName != dtf) | (dBPP >= 110))
-# }
 
 # save filtered dets
 save(detsFilt, file = detsFiltFile)

@@ -15,14 +15,14 @@ editor_options:
   # USER DEFINED PARAMS BELOW #
   chunk_output_type: console
 params: 
-  mission: sg639_MHI_Apr2023
-  pgver: pam20207b # string e.g., pam20207b, doesn't need quotations
-  path_pg: 'T:/glider_MHI_analysis/pamguard' # see NB below about using drive letter
-  path_dets: 'T:/glider_MHI_analysis/classification'
-  path_llamp: 'Z:/LLHARP/processingCode/llamp'
+  mission: sg639_MHI_Apr2022 # for report printing/building filenames
+  pgver: pam20207b # string e.g., pam20207b, doesn't need quotations, for making file names
+  path_pg: 'T:/glider_MHI_analysis/pamguard' # must use drive letter (not //)
+  path_dets: 'T:/glider_MHI_analysis/classification' # path to AcousticStudies
+  # path_code: 'Z:/LLHARP/processingCode/llamp' # path to code (if not using r proj/here package)
   path_to_refSpec: '//piccrp4nas/grampus/llharp/processingCode/llamp/files/reference_spectra'
-  refSpecList: !r c('meanSpecGm', 'meanSpecPc', 'refSpecPc_LLHARP') # use !r to call r then 
-  refSpecSp: !r c('Gm', 'Pc', 'Pc-LL')
+  refSpecList: !r c('meanSpecGm', 'refSpecPc_LLHARP', 'meanSpecPc') # use !r to call r then 
+  refSpecSp: !r c('Gm', 'Pc-LL', 'Pc')
 ---
 
 ## Trip/recorder: `r params$misson`
@@ -114,6 +114,21 @@ rsPalette <- c('#1b9e77', '#d95f02', '#7570b3', '#e7298a',
                '#66a61e', '#e6ab02')
 ```
 
+#### Define needed functions
+
+Source some external functions
+
+```{r source-functions}
+
+source(here('R', 'functions', 'loadMultiBinaries.R'))
+source(here('R', 'functions', 'plotContours.R'))
+source(here( 'R', 'functions', 'clickSummary.R'))
+source(here( 'R', 'functions', 'whistleSummary.R'))
+
+# if not using Rproj/here package use:
+# source(file.path(params$path_code, 'R', 'functions', 'loadMultiBinaries.R'))
+```
+
 #### Load and prep AcousticStudies
 
 If already created, load an existing `dets` PAMpal AcousticStudy object for event processing. We need to load both the unfiltered `dets` and filtered `detsFilt` AcousticStudies. 
@@ -167,17 +182,6 @@ if (!is.null(refSpecList)){
 
 ```
 
-#### Define needed functions
-
-Source some external functions
-
-```{r source-functions}
-
-source(file.path(params$path_llamp, 'R', 'functions', 'loadMultiBinaries.R'))
-source(file.path(params$path_llamp, 'R', 'functions', 'plotContours.R'))
-source(file.path(params$path_llamp, 'R', 'functions', 'clickSummary.R'))
-source(file.path(params$path_llamp, 'R', 'functions', 'whistleSummary.R'))
-```
 
 ### Event summaries
 
