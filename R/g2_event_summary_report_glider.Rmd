@@ -21,8 +21,8 @@ params:
   path_dets: 'T:/glider_MHI_analysis/classification'
   path_llamp: 'Z:/LLHARP/processingCode/llamp'
   path_to_refSpec: '//piccrp4nas/grampus/llharp/processingCode/llamp/files/reference_spectra'
-  refSpecList: !r c('meanSpecGm', 'refSpecPc_LLHARP') # use !r to call r then 
-  refSpecSp: !r c('Gm', 'Pc')
+  refSpecList: !r c('meanSpecGm', 'meanSpecPc', 'refSpecPc_LLHARP') # use !r to call r then 
+  refSpecSp: !r c('Gm', 'Pc', 'Pc-LL')
 ---
 
 ## Trip/recorder: `r params$misson`
@@ -302,7 +302,8 @@ for (iEvent in c(1:nEventsFilt)){
       
       # add legend
       legend(x = 'topright', c(refSpecSp, 'Avg.', 'Med.', 'Noise'),  
-             lty = c(1, 1, 2, 1, 3), lwd = c(1, 1, 2, 3, 2), 
+             lty = c(rep(1, length(refSpecs)), 2, 1, 3), 
+             lwd = c(rep(1, length(refSpecs)), 2, 3, 2), 
              col = c(rsCols, 'black', 'black', 'black'), cex = 0.8)
     }
     

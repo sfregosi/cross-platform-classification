@@ -12,8 +12,8 @@ output:
     code_folding: hide
     # keep_md: yes
 editor_options:
-  chunk_output_type: console
   # USER DEFINED PARAMS BELOW #
+  chunk_output_type: console
 params: 
   ship: 'Lasker'
   path_acSt: '//piccrpnas/crp2/McCullough/PAMpal/Acoustic_Studies'
@@ -27,8 +27,8 @@ params:
   # path_ed: '//piccrp4nas/grampus/llharp/analysis/eventDetections'
   # calFile: '//piccrp4nas/grampus/llharp/calibration/RevN_type4_110516-07_manual.tf' # for trips LL060 onward use '//picqueenfish/psd2/crp/LLHARP/calibration/RevN_type4_110516-07_manual.tf'
   path_to_refSpec: '//piccrp4nas/grampus/llharp/processingCode/llamp/files/reference_spectra'
-  refSpecList: !r c('meanSpecGm', 'refSpecPc_LLHARP') # use !r to call r then 
-  refSpecSp: !r c('Gm', 'Pc')
+  refSpecList: !r c('meanSpecGm', 'meanSpecPc', 'refSpecPc_LLHARP') # use !r to call r then 
+  refSpecSp: !r c('Gm', 'Pc', 'Pc-LL')
 ---
 
 ## HICEAS 2017 towed array data: `r params$ship` - `r params$acStFile`
@@ -306,7 +306,8 @@ for (iEvent in c(1:nEventsFilt)){
       
       # add legend
       legend(x = 'topright', c(refSpecSp, 'Avg.', 'Med.', 'Noise'),  
-             lty = c(1, 1, 2, 1, 3), lwd = c(1, 1, 2, 3, 2), 
+             lty = c(rep(1, length(refSpecs)), 2, 1, 3), 
+             lwd = c(rep(1, length(refSpecs)), 2, 3, 2), 
              col = c(rsCols, 'black', 'black', 'black'), cex = 0.8)
     }
     
