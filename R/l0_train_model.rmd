@@ -1,0 +1,218 @@
+---
+title: "Train Longline BANTER Model"
+author: "Selene Fregosi"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+geometry: margin = 1cm
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 4
+    # code_folding: hide
+    # keep_md: yes
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      # cache = FALSE, 
+                      # warning = FALSE, 
+                      message = FALSE
+)
+```
+
+## Purpose
+
+An initial Longline HARP BANTER model has been created as part of the Simonis et al. (in submission) manuscript, however, this model  (`LLHARP_BANTER_2class_2023-05-31.rda`) does not include the same filtering as the towed array model and only includes data from longline trips through 2020. The purpose of this script is to generate an updated Longline BANTER model with some additional events from Phase 3 of the Longline Acoustic Montoring Project and with some processing adjustments to match that of the towed array model (include filtering of click detectors and remove calibration).
+
+## Set up
+
+### Load libraries
+```{r libraries}
+library(banter)
+library(rfPermute)
+library(ggplot2)
+```
+
+### Set paths and run type
+```{r set-paths}
+# path to save models
+# path_models <- file.path('T:/glider_MHI_analysis', 'classification', 'models')
+path_models <- file.path('Z:/LLHARP/analysis/banterModels')
+
+# Re-generate/train model (1) or load existing model to view results (0)
+freshRun <- 0
+```
+
+## Load training data
+
+Training data was created with `XX R SCRIPT`. 
+
+Alternatively, if this is not a fresh run to train a new model, load an existing model and just look at the results. 
+
+If loading `TrainingDataset_Pc_UO_Pm2023-05-30_edited.rda`, events are labeled Pc, UO and Pm.
+
+```{r load-data}
+# load(file = file.choose())
+# load('Z:/LLHARP/processingCode/LLHARP/data/TrainingDataset_Pc_UO_Pm2023-05-30_edited.rda')
+# load('Z:/LLHARP/processingCode/LLHARP/data/AllEventsTBP_Pc_UO_Pm2023-05-30_edited.rda')
+
+
+if (freshRun == 1){
+  trainingFile <- 'Z:/LLHARP/analysis/banter2024/simonis_data/TrainingDataset_Pc_UO_Pm2023-05-30_edited.rda'
+  load(trainingFile)
+  # load to-be-predicted file
+  # TBPFile <-'Z:/LLHARP/analysis/banter2024/simonis_data/AllEvents_TBP_Pc_UO_Pm2023-05-30.rda'
+  # load(TBPFile)
+} else if (freshRun == 0){
+  modelFile <- file.path(path_models, 'LLHARP_BANTER_2class_2023-05-31.rda')
+  load(modelFile)
+  cat('Loaded existing model:', modelFile, '\n')
+}
+
+```
+
+## Clean data
+
+If the training data contains species other than just `Pc` or `UO`, they need to be cleaned up...
+
+```{r clean}
+    #Relabel all Pm events as UO
+    # PmEvents<-which(TrainingDataset$events$species=='Pm')
+    # TrainingDataset$events$species[PmEvents]<-'UO'
+    
+```
+
+## Build the model
+```{r build}
+# the PDF says no click_detector_0 detections were included but I see them in 
+# the banterAllsmall list -- THEY ARE EXCLUDED BELOW
+# View(banterAllsmall$detectors)
+
+# Check for click_detector_0 in training dataset
+TrainingDataset$detectors$Click_Detector_0 <- NULL
+
+
+if (freshRun == 1){
+  # build the model
+  bant.mdl <- initBanterModel(banterAllsmall$events)
+  bant.mdl <- addBanterDetector(
+    bant.mdl,
+    data = TrainingDataset$detectors, 
+    ntree = 5000,
+    sampsize = 8
+  )
+  bant.mdl <- runBanterModel(bant.mdl, ntree = 10000, sampsize = 8)
+  
+  # save model
+  save(bant.mdl, file = file.path(path_models, paste0('bantMDL_LLHARP_',
+                                                      Sys.Date(), '.rda')))
+  # get random forest data and save
+  event.rf <- getBanterModel(bant.mdl, "event")
+  save(event.rf, file = file.path(path_models, paste0('eventRF_LLHARP_',
+                                                      Sys.Date(), '.rdata')))
+} else if (freshRun == 0){
+  event.rf <- getBanterModel(bant.mdl, "event")
+  cat('No model trained. Showing results from existing model:', modelFile, '\n')
+}
+
+```
+## If old training data, fix the column names
+
+
+```{r}
+if(FreshRun==1){
+  #Fix kHz to Hz parameter names
+  # which events have centerkHz cols?
+  # pull out this click detector for ease of exploring (shorter name now cd1)
+  cd1 = TrainingDataset$detectors$Click_Detector_1 # 395k rows
+  cd1_trim = cd1[which(!is.na(cd1$centerkHz_10dB)),] # 48k rows
+  ue = unique(cd1_trim$event.id)
+  ue
+  # 19 unique events have kHz, and they are all from Trip LL010. This makes sense 
+  # bc LL010 was just rerun
+  
+  # which rows have data in the kHz col? Should give all LL010 events
+  kHzIdx = which(!is.na(cd1$centerkHz_10dB))
+  # Which rows have NAs in the kHz col? Should give everything else...
+  HzIdx = which(is.na(cd1$centerkHz_10dB))
+  # these add up to the full length of cd1 (395k)
+  
+  
+  # ------ Try to fix -------------------------------------------------------
+  # PLAN: 
+  # Move all centerHz_3dB and centerHz_10dB values for 'old' outputs to kHz cols
+  # here just trying for CD1, but will need to loop through for all click detectors
+  
+  # found the HzIdx above. Now fill in kHz col with Hz col values
+  cd1$centerkHz_10dB[HzIdx] = cd1$centerHz_10dB[HzIdx]
+  # check it...
+  checkIdx = which(is.na(cd1$centerkHz_10dB))
+  # no more NAs in kHz col...yay!
+  
+  # repeat for 3dB cols
+  cd1$centerkHz_3dB[HzIdx] = cd1$centerHz_3dB[HzIdx]
+  checkIdx = which(is.na(cd1$centerkHz_3dB))
+  
+  # now delete the centerHz cols
+  cd1_new = subset(cd1, select = -c(centerHz_3dB, centerHz_10dB))
+  
+  
+  # ------ Loop through all click detectors ---------------------------------
+  
+  # find indices of all click detectors in TrainingDataset object
+  clkIdx = grep("Click_Detector_", names(TrainingDataset$detectors))
+  
+  # loop through all click detectors
+  for (cd in clkIdx){
+    
+    # 10 dB
+    HzIdx = which(is.na(TrainingDataset$detectors[[cd]]$centerkHz_10dB))
+    TrainingDataset$detectors[[cd]]$centerkHz_10dB[HzIdx] =
+      TrainingDataset$detectors[[cd]]$centerHz_10dB[HzIdx]
+    
+    # 3 dB
+    HzIdx = which(is.na(TrainingDataset$detectors[[cd]]$centerkHz_3dB))
+    TrainingDataset$detectors[[cd]]$centerkHz_3dB[HzIdx] =
+      TrainingDataset$detectors[[cd]]$centerHz_3dB[HzIdx]
+    
+    # remove the old cols
+    TrainingDataset$detectors[[cd]] = 
+      subset(TrainingDataset$detectors[[cd]],  
+             select = -c(centerHz_3dB, centerHz_10dB))
+  }
+  
+  # save revised TrainingData
+  save(TrainingDataset, file = str_replace(TrainingFile,'.rda','_edited.rda'))
+}
+```
+
+```{r}
+if(FreshRun==1){
+  # find indices of all click detectors in TrainingDataset object
+  clkIdx = grep("Click_Detector_", names(AllEvents_TBP$detectors))
+  
+  # loop through all click detectors
+  for (cd in clkIdx){
+    
+    # 10 dB
+    HzIdx = which(is.na(AllEvents_TBP$detectors[[cd]]$centerkHz_10dB))
+    AllEvents_TBP$detectors[[cd]]$centerkHz_10dB[HzIdx] =
+      AllEvents_TBP$detectors[[cd]]$centerHz_10dB[HzIdx]
+    
+    # 3 dB
+    HzIdx = which(is.na(AllEvents_TBP$detectors[[cd]]$centerkHz_3dB))
+    AllEvents_TBP$detectors[[cd]]$centerkHz_3dB[HzIdx] =
+      AllEvents_TBP$detectors[[cd]]$centerHz_3dB[HzIdx]
+    
+    # remove the old cols
+    AllEvents_TBP$detectors[[cd]] = 
+      subset(AllEvents_TBP$detectors[[cd]],  
+             select = -c(centerHz_3dB, centerHz_10dB))
+  }
+  
+  # save revised AllEvents_TBP
+  save(AllEvents_TBP, file = str_replace(TBPFile,'.rda','_edited.rda'))
+}
+
+```
+
