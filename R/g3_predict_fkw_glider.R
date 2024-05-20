@@ -78,7 +78,7 @@ logFile <- file.path(path_analysis, 'triton', 'merged_logs',
                      paste0(mission, '_log_merged.csv'))
 # tsFile <- file.path(path_analysis, 'tripSummaries', paste0(tripStr, '_summary.csv'))
 resFile <- file.path(path_analysis, 'classification', 'predictions', 
-                     paste0(fnStr, '_predictedEvents.csv'))
+                     paste0(fnStr, '_predictedEvents_', mdlType, '.csv'))
 
 # ------ LOAD and export AcousticStudies objects --------------------------
 
@@ -124,9 +124,9 @@ if (mdlType == 'HICEAS'){
 }
 
 # View(res)
+# Pc <- score$predict.df[which(score$predict.df$predicted == 'X33'),]
 
 # save it! 
 write.csv(res, file = resFile)
-
 
 
