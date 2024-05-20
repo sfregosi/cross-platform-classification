@@ -38,18 +38,18 @@ library(rfPermute)
 
 # ------- >>TRIP/RECORDER INFO --------------------------------------------
 # define glider mission
-mission <- 'sg639_MHI_Apr2023'
+mission <- 'sg639_MHI_Apr2022'
 
 # Pamguard version
 pgVer <- '20207b'
 
 # choose BANTER model to use for predictions (uncomment desired model)
 # HICEAS 2017 towed array
-mdlType <- 'HICEAS'
-mdlName <- 'bantMDL_HICEAS2017-CH5_Filtered_577.rdata'
+modelType <- 'HICEAS'
+modelName <- 'bantMDL_HICEAS2017-CH5_Filtered_577.rdata'
 # LLHARP
-# mdlType <- 'LLHARP
-# mdlName <-  'LLBanterModel_2023-01-26.rda' 'LLHARP_BANTER_2023-03-23.rda'
+# modelType <- 'LLHARP
+# modelName <-  'LLBanterModel_2023-01-26.rda' 'LLHARP_BANTER_2023-03-23.rda'
 
 # define paths
 path_analysis <- 'T:/glider_MHI_analysis'
@@ -69,16 +69,16 @@ detsFiltFile <- file.path(path_analysis, 'classification', 'dets_filtered',
                           paste0(fnStr, '_detsFilt.rda'))
 banterDetsFile <- file.path(path_analysis, 'classification', 'for_banter', 
                             paste0(fnStr, '_banterDets.rda'))
-if (mdlType == 'HICEAS'){
-  modelFile <- file.path(path_analysis, 'classification', 'models', 'HICEAS_BANTER', mdlName)
-} else if (mdlType == 'LLHARP'){
-  modelFile <- file.path(path_analysis, 'classification', 'models', mdlName)
+if (modelType == 'HICEAS'){
+  modelFile <- file.path(path_analysis, 'classification', 'models', 'HICEAS_BANTER', modelName)
+} else if (modelType == 'LLHARP'){
+  modelFile <- file.path(path_analysis, 'classification', 'models', modelName)
 }
 logFile <- file.path(path_analysis, 'triton', 'merged_logs', 
                      paste0(mission, '_log_merged.csv'))
 # tsFile <- file.path(path_analysis, 'tripSummaries', paste0(tripStr, '_summary.csv'))
 resFile <- file.path(path_analysis, 'classification', 'predictions', 
-                     paste0(fnStr, '_predictedEvents_', mdlType, '.csv'))
+                     paste0(fnStr, '_predictedEvents_', modelType, '.csv'))
 
 # ------ LOAD and export AcousticStudies objects --------------------------
 
@@ -90,6 +90,8 @@ load(detsFiltFile)
 # use training = FALSE if just predicting to avoid any auto-removal of events 
 # that don't meet the training minimum requirements
 banterDets <- export_banter(detsFilt, training = FALSE)
+# remove any lingering Click_Detector_0 detections (unclassified clicks)
+banterDets$detectors$Click_Detector_0<-NULL
 # View(banterDets$events)
 
 # save 'em
@@ -113,11 +115,11 @@ et <- read.csv(logFile)
 
 res <- full_join(et, score$predict.df, by = c('id' = 'event.id'))
 # reorder - col names depend on model
-if (mdlType == 'HICEAS'){
+if (modelType == 'HICEAS'){
   res <- res %>% relocate(id) %>% 
     relocate(c(predicted, original, X33, X577, correct), .after = 'end') %>%
     select(!sp)
-} else if (mdlType == 'LLHARP'){
+} else if (modelType == 'LLHARP'){
   res <- res %>% relocate(id) %>% 
     relocate(c(predicted, original, Pc, UO, correct), .after = 'end') %>%
     select(!species)
