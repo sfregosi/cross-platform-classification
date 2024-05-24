@@ -69,6 +69,11 @@ save(evTable, file = file.path(path_big_data, paste0('eventTable_',
                                                           Sys.Date(), '.rda')))
 write.csv(evTable, file = here('data', paste0('eventTable_', Sys.Date(), '.csv')))
 
+
+# ------ MANUAL species ID updates OUTSIDE R ------------------------------
+
+
+
 # ------ Combine AcousticStudies ------------------------------------------
 
 
