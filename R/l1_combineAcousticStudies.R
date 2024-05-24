@@ -28,7 +28,7 @@ evTable <- data.frame()
 keepColNames <- c('start', 'end', 'id', 'sp', 'species', 'x', 'notes')
 
 # loop through all the .rda files, load, and add to the list
-for(a in seq_along(acStFiles)){
+for (a in seq_along(acStFiles)){
   load(file.path(path_acSt, acStFiles[a]))
   
  # get some trip/event data
@@ -40,7 +40,12 @@ for(a in seq_along(acStFiles)){
  keepCols <- cn %in% keepColNames
  evData <- anc$grouping[,keepCols]
  # standardize col name - sometimes the col is 'species', sometimes 'sp' 
- colnames(evData)[1:4] <- c('start', 'stop', 'id', 'species')
+ spCol <- grepl('sp', colnames(evData))
+ colnames(evData)[spCol] <- 'species'
+ # change end column to stop 
+ endCol <- grepl('end', colnames(evData)) 
+ colnames(evData)[endCol] <- 'stop'
+ # look for notes column or add a blank one 
  if (length(colnames(evData)) == 5){ # notes col present
    colnames(evData)[5] <- 'notes'
  } else if (length(colnames(evData)) < 5){
@@ -48,7 +53,8 @@ for(a in seq_along(acStFiles)){
  }
  # add trip col
  evData$trip <- rep(idStr, nrow(evData))
- evData <- evData[,c(6,3:4,1:2,5)]
+ # reorder to standardize
+ evData <- evData[,c('trip', 'id', 'species', 'start', 'stop', 'notes')]
  # add to the able of all events
  evTable <- rbind(evTable, evData)
  
