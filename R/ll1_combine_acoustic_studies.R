@@ -64,24 +64,7 @@ for (a in seq_along(acStFiles)){
  acStList[[idStr]] <- detsFilt
 }
 
-
-
-# ------ Save intermediate step -------------------------------------------
-
-save(acStList, file = file.path(path_big_data, paste0('acousticStudyList_',
-                                                      Sys.Date(), '.rda')))
-
-save(evTable, file = file.path(path_big_data, paste0('eventTable_',
-                                                          Sys.Date(), '.rda')))
-write.csv(evTable, file = here('data', paste0('eventTable_', Sys.Date(), '.csv')))
-
-
-# ------ MANUAL species ID updates OUTSIDE R ------------------------------
-
-
-
 # ------ Combine AcousticStudies ------------------------------------------
-
 
 # combine them! 
 detsFiltAll <- PAMpal::bindStudies(acStList)
@@ -93,4 +76,63 @@ save(detsFiltAll, file = file.path(
 # export for banter and save
 banterDetsAll <- export_banter(detsFiltAll, training = TRUE)
 save(banterDets, file = banterDetsFile)
+
+
+
+# ------ Save intermediate step -------------------------------------------
+
+save(acStList, file = file.path(path_big_data, paste0('acousticStudyList_',
+                                                      Sys.Date(), '.rda')))
+
+save(evTable, file = file.path(path_big_data, paste0('eventTable_',
+                                                          Sys.Date(), '.rda')))
+write.csv(evTable, file = here('data', paste0('eventTable_', Sys.Date(), '.csv')))
+
+# 71 acoustic studies
+# 634 events
+
+# ------ MANUAL species ID updates OUTSIDE R ------------------------------
+
+# manual assessments are on Google Sheets. Created new column in eventTable csv 
+# 'new_species' and pasted in updated manual IDs. Saved as 
+# 'event_table_2024-05-26_manualEdits.csv'
+
+
+# ------ Read in and clean up new species ID info -------------------------
+
+evTableNew <- read.csv(here('data', paste0('eventTable_', '2024-05-26', 
+                                           '_manualEdits.csv')))
+
+# rename trip col (has recorder string) and make trip column
+colnames(evTableNew)[grep('trip', colnames(evTableNew))] <- 'trip_rec'
+evTableNew$trip <-  substr(evTableNew[['trip_rec']], 1, 5)
+
+# rename id col to event_id
+colnames(evTableNew)[grep('id', colnames(evTableNew))] <- 'event_id'
+
+# get rid of old species and rename species_new to species
+evTableNew <- subset(evTableNew, select = -species)
+colnames(evTableNew)[grep('new_species', colnames(evTableNew))] <- 'species'
+
+# remove all rows with NA or MIN in the new_species
+badRows <- grepl('NA', evTableNew$species) | is.na(evTableNew$species) | 
+  grepl('MIN', evTableNew$species)
+# sum(badRows) # how many to remove?
+evTableClean <- evTableNew[!badRows,]
+
+# check for unique sp ids
+unique(evTableClean$species)
+cat('Total events:', nrow(evTableClean), '\n')
+cat('Total Pc events:', length(which(evTableClean$species == 'Pc')), '\n')
+cat('Unique recorders:', length(unique(evTableClean$trip_rec)), '\n')
+cat('Unique trips:', length(unique(evTableClean$trip)), '\n')
+
+# only 1 entire AcSt got dropped (Trip 38) 
+
+
+# rename all non-Pc to UO (Pm, Kspp, Gg, BW)
+PmEvents<-which(TrainingDataset$events$species=='Pm')
+TrainingDataset$events$species[PmEvents]<-'UO'
+
+
 

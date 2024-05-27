@@ -69,6 +69,17 @@ if (freshRun == 1){
   cat('Loaded existing model:', modelFile, '\n')
 }
 
+
+
+
+cat('Total events:', nrow(evTableClean), '\n')
+cat('Total Pc events:', length(which(evTableClean$species == 'Pc')), '\n')
+cat('Total X events:', length(which(evTableClean$species == 'X')), '\n')
+cat('Total UO events:', nrow(evTableClean), '\n')
+cat('Unique recorders:', length(unique(evTableClean$trip_rec)), '\n')
+cat('Unique trips:', length(unique(evTableClean$trip)), '\n')
+
+
 ```
 
 ## Clean data
