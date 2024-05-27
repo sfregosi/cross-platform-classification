@@ -1,0 +1,19 @@
+---
+title: "Towed array data loading and processing overview"
+author: "selene fregosi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Overview of steps
+
+Data from HICEAS 2017. 
+
+`ta1_retrain_model.rmd`: Re-trained model with newest `banter` version. 
+
+`ta2_event_summary_report_HICEAS2017.rmd`: Created summary report for both *Sette* and *Lasker* following the same format as the longline data, but only plotted blackfish events (31 - melon-headed whales, 32 - pygmy killer whales, 33 - false killer whales, 36 - short-finned pilot whales, 37 - killer whales). Note this created an html with the same name as the `.rmd` and had to be manually renamed (and moved to the `rmd_outputs` folder) after running for each vessel. 
+
+
+
+
+
