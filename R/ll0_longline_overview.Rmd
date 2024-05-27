@@ -5,20 +5,30 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-# Overview of steps
+## Pamguard re-processing
 
-Re-ran Phase 1 and Phase 2 trips through standardized version of Pamguard (2.02.07b). 
+Re-ran Phase 1 and Phase 2 trips through standardized version of Pamguard (2.02.07b) to match the most recent Phase 3 runs. 
 
-Generated acoustic studies for these new runs using functions within the `llamp` repository (`workflow_generate_acousticStudies.R`).
+## PAMpal processing
+
+Generated AcousticStudies for these new runs using functions within the `llamp` repository (`workflow_generate_acousticStudies.R`). AcousticStudies already existed for Phase 3 data.
 
 Created event reports for each trip using `workflow_generate_eventReports.R` in the `llamp` repository. 
 
+## Manual assessment
 
-`llx_combineEncounterTimes.R` was used to concatenate all the `LL##_encounterTimes.csv`s to build a fillable table for manual assessment. It was only used for Phase 3 data. Phase 2 was combined using copy-paste. 
+Ran `llx_combineEncounterTimes.R` to concatenate all the `LL##_encounterTimes.csv`s to build a spreadsheet to be filled with updated manual assessments. Made copies of this on Google Drive for each analyst and added columns for 'New ID' and 'Notes'. This script was only used for Phase 3 data. Phase 2 was combined using copy-paste since not all trips were included (due to time/effort constraints). 
 
-Used combination of Triton to look at raw data, Pamguard viewer to look at raw data and detections, and event reports to assign species ID as possible. At a minimum each event was labeled as 'UO' if it was not a false killer whale. 'Pc' was used to label clear false killer whale events. Other events were labeled to species if it was obvious but this was a low priority (e.g., 'BW' used for any beaked whales with the possible species noted in the comments, 'Gg' for Risso's, 'Kspp' for *Kogia* species NBHF clicks, and 'Pm' for sperm whales). If it was not clear whether it was or was not 'Pc', it was labeled as 'X' to be excluded for training data. In other cases, additional labels like 'NA' or 'MIN' were given if the number of detected signals made it impossible to make a decision, also indicating that this event should be exluded from training data. Lastly, if there were very obvious false positive whistles (this occurred in some trips where there was a lot of instrument self noise) it was marked as such to be excluded from training data. 
+Used combination of Triton to look at raw data, Pamguard viewer to look at raw data and detections, and event reports to assign species ID as possible. At a minimum each event was labeled as 'UO' if it was not a false killer whale. 'Pc' was used to label clear false killer whale events. Other events were labeled to species if it was obvious but this was a low priority (*e.g.*, 'BW' used for any beaked whales with the possible species noted in the comments, 'Gg' for Risso's, 'Kspp' for *Kogia* species NBHF clicks, and 'Pm' for sperm whales). If it was not clear whether it was or was not 'Pc', it was labeled as 'X' to be excluded for training data. In other cases, additional labels like 'NA' or 'MIN' were given if the number of detected signals made it impossible to make a decision, also indicating that this event should be excluded from training data. Lastly, if there were very obvious false positive whistles (this occurred in some trips where there was a lot of instrument self noise) it was marked as such to be excluded from training data. 
 
-Assessments of multiple analysts were adjudicated to make a final decision for the training data and saved in the `XXXXXX` spreadsheet. That spreadsheet was used in conjunction with `ll1_combine_acoustic_studies.R` to create the training dataset. 
+Phase 3 assessments by separate analysts (SF, JT) were adjudicated (see `manual assessment_combined_2024-05-23.xlsx`) to make a final decision for the training data. Phases 1 and 2 were reassessed (SF) and compared to original assessments (AES) in a separate tab on the `manual_assessment-fregosi` Google Sheet. 
+
+## Final training events
+
+`ll1_combine_acoustic_studies.R` first creates an `eventTable` that concatenated every event from all available updated AcousticStudies in `//piccrp4nas/grampus/llharp/analysis/eventDetections/dets_filtered`. This gave 71 AcousticStudy `.rda` files and 634 total events (!!) but has the species and notes from the initial assessments and contains events that need to be excluded for noise, mixed species, or other reasons. 
+
+A 'new' species column was manually added to the event table output as a `.csv` and the species label was pasted in from the different assessment spreadsheets to give a 'final' species ID. This could be 'UO' or 'Pc' which will be the two classes of the model, or one of the other species IDs such as 'Pm', 'Gg', 'BW', or 'Kspp'. Events that were unclear or possibly mixed were left as 'X' events and events that had issues with noise or insufficient signals were marked as 'NA' to be removed. The other species labels were preserved for any future prediction or investigation work, but all of those categories will be reassigned or removed below. The 'X' events were left in for future predictions on those events, but will be excluded from the model training. 
+
 
 Then `ll2_train_model.rmd` was used to train the longline model. 
 
