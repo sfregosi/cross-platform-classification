@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE,
 
 ## Purpose
 
-An initial Longline HARP BANTER model has been created as part of the Simonis et al. (in submission) manuscript, however, this model  (`LLHARP_BANTER_2class_2023-05-31.rda`) does not include the same filtering as the towed array model and only includes data from longline trips through 2020. The purpose of this script is to generate an updated Longline BANTER model with some additional events from Phase 3 of the Longline Acoustic Montoring Project and with some processing adjustments to match that of the towed array model (include filtering of click detectors and remove calibration).
+An initial Longline HARP BANTER model has been created as part of the Simonis et al. (in submission) manuscript, however, this model  (`LLHARP_BANTER_2class_2023-05-31.rda`) does not include the same filtering as the towed array model and only includes data from longline trips through 2020. The purpose of this script is to generate an updated Longline BANTER model with some additional events from Phase 3 of the Longline Acoustic Montoring Project, some Phase 1 and 2 trips removed due to noise or other uncertainties, and with some processing adjustments to match that of the towed array model (include filtering of click detectors and remove calibration).
 
 ## Set up
 
@@ -37,19 +37,20 @@ library(ggplot2)
 ```{r set-paths}
 # path to save models
 # path_models <- file.path('T:/glider_MHI_analysis', 'classification', 'models')
-path_models <- file.path('Z:/LLHARP/analysis/banterModels')
+# path_models <- file.path('Z:/LLHARP/analysis/banterModels')
+path_models <- file.path('T:/fregosi/cross_platform_banter_big_data/models')
 
 # Re-generate/train model (1) or load existing model to view results (0)
-freshRun <- 0
+freshRun <- 1
 ```
 
 ## Load training data
 
-Training data was created with `XX R SCRIPT`. 
+Training data was created with `ll1_combine_acoustic_studies.R`. 
 
 Alternatively, if this is not a fresh run to train a new model, load an existing model and just look at the results. 
 
-If loading `TrainingDataset_Pc_UO_Pm2023-05-30_edited.rda`, events are labeled Pc, UO and Pm.
+If loading `TrainingDataset_Pc_UO_Pm2023-05-30_edited.rda`, events are labeled Pc, UO and Pm. This `.rda` file is already exported for `banter`. 
 
 ```{r load-data}
 # load(file = file.choose())
@@ -58,7 +59,10 @@ If loading `TrainingDataset_Pc_UO_Pm2023-05-30_edited.rda`, events are labeled P
 
 
 if (freshRun == 1){
-  trainingFile <- 'Z:/LLHARP/analysis/banter2024/simonis_data/TrainingDataset_Pc_UO_Pm2023-05-30_edited.rda'
+  # trainingFile <- file.path('Z:/LLHARP/analysis/banter2024/simonis_data',
+  #                           'TrainingDataset_Pc_UO_Pm2023-05-30_edited.rda')
+  trainingFile <- file.path('T:/fregosi/cross_platform_banter_big_data', 
+                            'banterDetsTrain_LLHARP_2024-05-27.rda')
   load(trainingFile)
   # load to-be-predicted file
   # TBPFile <-'Z:/LLHARP/analysis/banter2024/simonis_data/AllEvents_TBP_Pc_UO_Pm2023-05-30.rda'
@@ -70,45 +74,41 @@ if (freshRun == 1){
 }
 
 
-
-
-cat('Total events:', nrow(evTableClean), '\n')
-cat('Total Pc events:', length(which(evTableClean$species == 'Pc')), '\n')
-cat('Total X events:', length(which(evTableClean$species == 'X')), '\n')
-cat('Total UO events:', nrow(evTableClean), '\n')
-cat('Unique recorders:', length(unique(evTableClean$trip_rec)), '\n')
-cat('Unique trips:', length(unique(evTableClean$trip)), '\n')
-
-
 ```
 
 ## Clean data
 
-If the training data contains species other than just `Pc` or `UO`, they need to be cleaned up...
+If the training data contains species other than just `Pc` or `UO`, they need to be cleaned up. Replace all non-Pc entries with `UO`. 
+
+Also, remove any 'Click_Detector_0' detections. 
 
 ```{r clean}
-    #Relabel all Pm events as UO
-    # PmEvents<-which(TrainingDataset$events$species=='Pm')
-    # TrainingDataset$events$species[PmEvents]<-'UO'
-    
+
+uSp <- unique(banterDetsTrain$events$species)
+uSp <- uSp[-which(uSp == 'UO' | uSp == 'Pc')]
+
+for (u in seq_along(uSp)){
+  uSpIdx <- which(banterDetsTrain$events$species == uSp[u])
+  banterDetsTrain$events$species[uSpIdx] <- 'UO'
+}
+
+# unique(banterDetsTrain$events$species)
+
+# Check for click_detector_0 in training dataset
+banterDetsTrain$detectors$Click_Detector_0 <- NULL
+
 ```
 
 ## Build the model
 ```{r build}
-# the PDF says no click_detector_0 detections were included but I see them in 
-# the banterAllsmall list -- THEY ARE EXCLUDED BELOW
-# View(banterAllsmall$detectors)
-
-# Check for click_detector_0 in training dataset
-TrainingDataset$detectors$Click_Detector_0 <- NULL
 
 
 if (freshRun == 1){
   # build the model
-  bant.mdl <- initBanterModel(banterAllsmall$events)
+  bant.mdl <- initBanterModel(banterDetsTrain$events)
   bant.mdl <- addBanterDetector(
     bant.mdl,
-    data = TrainingDataset$detectors, 
+    data =  banterDetsTrain$detectors, 
     ntree = 5000,
     sampsize = 8
   )
