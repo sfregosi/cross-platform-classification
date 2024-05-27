@@ -29,10 +29,11 @@ keepColNames <- c('start', 'end', 'id', 'sp', 'species', 'x', 'notes')
 
 # loop through all the .rda files, load, and add to the list
 for (a in seq_along(acStFiles)){
-  load(file.path(path_acSt, acStFiles[a]))
+ load(file.path(path_acSt, acStFiles[a]))
   
  # get some trip/event data
  idStr <- PAMpal::id(detsFilt) # get trip_rec info for list name
+ evsFilt <- names(PAMpal::events(detsFilt))
  # pull ancillary grouping data
  anc <- PAMpal::ancillary(detsFilt)
  # check column names
@@ -58,26 +59,14 @@ for (a in seq_along(acStFiles)){
  # add to the able of all events
  evTable <- rbind(evTable, evData)
  
- # re-assign the species (for instances with 'sp' as NA0)
- detsFilt <- PAMpal::setSpecies(detsFilt, method = 'manual', value = evData$species)
+ # re-assign the species (for instances with 'sp' as NA)
+ # get species names ONLY for events that weren't filtered out
+ spToSet <- evData$species[evData$id %in% evsFilt]
+ detsFilt <- PAMpal::setSpecies(detsFilt, method = 'manual', value = spToSet)
+ 
  # add the AcSt to the list
  acStList[[idStr]] <- detsFilt
 }
-
-# ------ Combine AcousticStudies ------------------------------------------
-
-# combine them! 
-detsFiltAll <- PAMpal::bindStudies(acStList)
-
-# save it - to the dir above dets_filtered
-save(detsFiltAll, file = file.path(
-  dirname(path_acSt), paste0('detsFiltAll_LLHARP_', Sys.Date(), '.rda')))
-
-# export for banter and save
-banterDetsAll <- export_banter(detsFiltAll, training = TRUE)
-save(banterDets, file = banterDetsFile)
-
-
 
 # ------ Save intermediate step -------------------------------------------
 
@@ -89,7 +78,23 @@ save(evTable, file = file.path(path_big_data, paste0('eventTable_',
 write.csv(evTable, file = here('data', paste0('eventTable_', Sys.Date(), '.csv')))
 
 # 71 acoustic studies
-# 634 events
+# 634 total events
+# 612 filtered events
+
+# ------ Combine AcousticStudies ------------------------------------------
+
+# combine them! 
+detsFiltAll <- PAMpal::bindStudies(acStList)
+
+# save it - to the dir above dets_filtered
+save(detsFiltAll, file = file.path(path_big_data, 
+                                   paste0('detsFiltAll_LLHARP_', Sys.Date(), '.rda')))
+
+# export for banter and save
+banterDetsAll <- PAMpal::export_banter(detsFiltAll, training = TRUE)
+save(banterDets, file = banterDetsFile)
+
+
 
 # ------ MANUAL species ID updates OUTSIDE R ------------------------------
 
