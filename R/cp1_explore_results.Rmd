@@ -31,6 +31,7 @@ Created following https://taikisan21.github.io/PAMpal/banterGuide.html
 library(banter)
 library(rfPermute)
 library(tidyverse)
+
 ```
 
 ```{r set_paths}
@@ -39,58 +40,97 @@ path_models <- file.path('T:/fregosi/cross_platform_banter_big_data/models')
 
 ```
 
+## Load models and data
 
-## Load towed array model
+```{r load-models}
 
-```{r load-ta}
+# towed array model
 modelFile <- file.path(path_models,  'bantMDL_HICEAS2017-CH5_Filtered_577_2024-05-20.rdata')
 
 load(modelFile)
-
-bant.rf <- getBanterModel(bant.mdl)
-bantData.df <- getBanterModelData(bant.mdl)
-
 bant.mdl_ta <- bant.mdl
+
+bant.rf_ta <- getBanterModel(bant.mdl_ta)
+bantData.df_ta <- getBanterModelData(bant.mdl_ta)
+
+# longline model
+modelFile <- file.path(path_models, 'bantMDL_LLHARP_2024-05-27_ss15_nt10k.rda')
+
+load(modelFile)
+bant.mdl_ll <- bant.mdl
+
+bant.rf_ll <- getBanterModel(bant.mdl_ll)
+bantData.df_ll <- getBanterModelData(bant.mdl_ll)
+
+# glider model
+# modelFile <- file.path(path_models, 'bantMDL_LLHARP_2024-05-27_ss15_nt10k.rda')
+# 
+# load(modelFile)
+# bant.mdl_gl <- bant.mdl
+# 
+# bant.rf_gl <- getBanterModel(bant.mdl_gl)
+# bantData.df_gl <- getBanterModelData(bant.mdl_gl)
 
 
 ```
 
+```{r load-data}
 
-### 2.4 Interpret _BANTER_ Results
-The `summary()` function provides information regarding your model results; however, conducting a 'deep dive' into these results will give you a better understanding of the strengths and limitations of your results and may guide you towards improving those results. Here we demonstrate a number of options for interpreting your _BANTER_ results. 
+# towed array data
+trainingFile <- file.path('R:/McCullough/PAMpal/Banter_TowedArray_Data',
+                          'banterAllsmall_HICEAS2017-CH5_Filtered-577.rdata')
 
-#### 2.4.1 Model Information
+load(trainingFile) # called banterAllsmall
+
+# longline data
+trainingFile <- file.path('T:/fregosi/cross_platform_banter_big_data', 
+                          'banterDetsTrain_LLHARP_2024-05-27.rda')
+load(trainingFile) # called banterDetsTrain
+banterDetsTrain_ll <- banterDetsTrain
+
+# glider data
+# trainingFile <- file.path('T:/fregosi/cross_platform_banter_big_data', 
+#                           'banterDetsTrain_LLHARP_2024-05-27.rda')
+# load(trainingFile) # called banterDetsTrain
+# banterDetsTrain_gl <- banterDetsTrain
+```
+
+## Towed array 
+
+### Model results
+
+#### Model Information
 
 **Detector Names & Sample Sizes**  
 Show the Detector Names and Sample Sizes
-```{r, include=TRUE}
+```{r model-info-ta, include=TRUE}
 # Get detector names for your _BANTER_ Model
-getDetectorNames(bant.mdl)
+getDetectorNames(bant.mdl_ta)
 # Get Sample sizes
-getSampSize(bant.mdl)
+getSampSize(bant.mdl_ta)
 ```
 
 **Number of Calls & Events, Proportion of Calls**  
 Number of calls (`numCalls()`), proportion of calls (`propCalls()`) and number of events (`numEvents()`) in your _BANTER_ detector models (or specify by event/species)
-```{r, include=TRUE}
+```{r num-calls-ta, include=TRUE}
 # number of calls in detector model
-numCalls(bant.mdl)
+numCalls(bant.mdl_ta)
 # number of calls by species (can also do by event)
-numCalls(bant.mdl, "species")
+numCalls(bant.mdl_ta, "species")
 
 # proportion of calls in detector model
-propCalls(bant.mdl)
+propCalls(bant.mdl_ta)
 # proportion of calls by event (can also do by species)
-#propCalls(bant.mdl, "event")
+#propCalls(bant.mdl_ta, "event")
 #[this is commented out as printout is long]
 
 # number of events, with default for Event Model
-numEvents(bant.mdl)
+numEvents(bant.mdl_ta)
 # number of events for a specific detector 
-numEvents(bant.mdl, "Whistle_and_Moan_Detector")
+numEvents(bant.mdl_ta, "Whistle_and_Moan_Detector")
 ```
 
-#### 2.4.2 Random Forest Summaries
+#### Random Forest Summaries
 
 The following functions are available in the `rfPermute` package and take a `randomForest` or `rfPermute` model object. Recall from above that the actual `randomForest` object can be extracted from the _BANTER_ model with the `getBanterModel()` function.
 
@@ -98,85 +138,84 @@ The following functions are available in the `rfPermute` package and take a `ran
 The Confusion Matrix is the most commonly used output for a Random Forest model, and is provided by `summary()`. The output includes the percent correctly classified for each species, the lower and upper confidence levels, and the priors (expected classification rate). 
 
 By default, `summary()` reports the 95% confidence levels of the percent correctly classified. By using the `confusionMatrix()` function, we can specify a different confidence level if desired. However, unlike `summary()`, `confusionMatrix()` takes a `randomForest` object like the one we extracted above.
-```{r, include=TRUE}
+```{r confusion-matrix-ta, eval = FALSE, include=TRUE}
 # Confusion Matrix
-confusionMatrix(bant.rf, conf.level = 0.75)
+confusionMatrix(bant.rf_ta, conf.level = 0.75)
 ```
 The `confusionMatrix()` function also has a `threshold` argument that provides the binomial probability that the true classification probability (given infinite data) is greater than or equal to this value. For example, if we want to know what the probability is that the true classification probability for each species is >= 0.80, we set `threshold = 0.8`:
-```{r, include=TRUE}
+```{r conf-mat-threshold-ta, include=TRUE}
 # Confusion Matrix with medium threshold
-confusionMatrix(bant.rf, threshold = 0.8)
+confusionMatrix(bant.rf_ta, threshold = 0.8)
 ```
-This shows that _D. capensis_ has a high probability of having a true classification score above 0.8 (Pr.gt_0.8 = 79.0). Conversely, the probability that the classification rate for _D.delphis_ is above 0.8 is very low (Pr.gt_0.8 = 6.8).  
 
 And alternative view of the confusion matrix comes in the form of a heat map.
-```{r, include=TRUE}
+```{r heat-map-ta, eval=FALSE}
 # Plot Confusion Matrix Heatmap
-plotConfMat(bant.rf, title="Confusion Matrix HeatMap") 
+plotConfMat(bant.rf_ta, title="Confusion Matrix HeatMap") 
 ```
 
 We can also examine confusion matrices for individual detectors, such as the whistle detector ("Whistle_and_Moan_Detector"):
-```{r}
-wmd.rf <- getBanterModel(bant.mdl, "Whistle_and_Moan_Detector")
+```{r conf-mat-wmd-ta, eval = FALSE}
+wmd.rf <- getBanterModel(bant.mdl_ta, "Whistle_and_Moan_Detector")
 confusionMatrix(wmd.rf)
 plotConfMat(wmd.rf) 
 ```
 
 **Model Percent Correct**  
 This function operates on a _BANTER_ model object and provides a summary data frame with the percent of each species correctly classified for each detector model and the event model. It is a summary of the diagonal values from the confusion matrices for all models.
-```{r, include=TRUE}
-modelPctCorrect(bant.mdl)
+```{r pct-correct-models-ta, include=TRUE}
+modelPctCorrect(bant.mdl_ta)
 ```
 
 **Plot Votes**  
 The strength of a classification model depends on the number of trees that 'voted' for the correct species. We can look at the votes from each of these 5,000 trees for an event to see how many of them were correct. This plot shows these votes where each vertical slice is an event, and the percentage of votes for each species is represented by their color. If all events for a species were to be correctly classified by all of the trees (votes) in the forest, then the plot for that species would be solid in the color that represents that species. 
-```{r, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r plot-votes-ta, include=TRUE, fig.width = 10, fig.asp = 0.6}
 # Plot Vote distribution
-plotVotes(bant.rf) 
+plotVotes(bant.rf_ta) 
 ```
 
 **Percent Correct**  
 Another way to visualize this distribution is to evaluate the percent of events correctly classified for a given threshold (specified percent of trees in the forest voting for that species). 
-```{r, include=TRUE}
+```{r pct-correct-threshold-ta, include=TRUE}
 # Percent Correct for a series of thresholds
-pctCorrect(bant.rf, pct = c(0.8, 0.6, .05))
+pctCorrect(bant.rf_ta, pct = c(0.8, 0.6, .05))
 ```
 These values will always decrease as the percent of trees threshold increases. That is because as stringency is decreased (lower thresholds), more samples are likely to be correctly classified. These values give an indication of the fraction of events that can be classified with high certainty. As we can see in this example data, the distribution goes to zero for all species at 95%. That is there are no events in any species that are correctly classified with 95% certainty.  
 
 **Plot Predicted Probabilities**  
 The full distribution of assignment probabilities to the predicted species class can be visualized with the `plotPredictedProbs()` function in `rfPermute`. Ideally, all events would be classified to the correct species (identified by the color), and would be strongly classified to the correct species (higher probablity of assignment). This plot can be used to understand the distribution of these classifications, and how strong the misclassifications were, by species.
-```{r, include=TRUE, fig.width = 10, fig.asp = 0.6}
-plotPredictedProbs(bant.rf, bins = 30, plot = TRUE)
+```{r pred-prob-ta, include=TRUE, fig.width = 10, fig.asp = 0.6}
+plotPredictedProbs(bant.rf_ta, bins = 30, plot = TRUE)
 ```
 
 **Proximity Plot**  
 The proximity plot provides a visualization of the distribution of events within the tree space. It shows the relative distance of events based on their average distance in nodes in the trees across the forest. For each event in the plot, the color of the central dot represents the true species identity, and the color of the circle represents the _BANTER_ classification. Ideally, these would form rather distinct clusters, one for each species. The wider the spread of the events in this feature space, the more variation found in these predictors. Some species differentiation may be predicted by other predictors and may not be clear based on this pair of dimensions (those may be differentiated with different predictors). 
-```{r, include=TRUE, fig.width = 10}
+```{r prox-plot-ta, include=TRUE, fig.width = 10}
 # Proximity Plot
-plotProximity(bant.rf)
+plotProximity(bant.rf_ta)
 ```
 
 **Importance Heat Map**  
 The importance heat map provides a visual assessment of the important predictors for the overall model. The _BANTER_ event model relies on the mean assignment probability for each of the detectors in our detector model, as well as any event level measures. For example, in this heat map, the first variable is  'dw.D.delphis', which is the mean probability that a detection was assigned to the species 'D.delphis' in the whistle detector. This requires extra steps to dig down to the specific whistle measures that are the important predictor variables for the whistle detector. 
-```{r, include=TRUE}
+```{r imp-heat-map-ta, include=TRUE}
 # Importance Heat Map
-plotImportance(bant.rf, plot.type = "heatmap")
+plotImportance(bant.rf_ta, plot.type = "heatmap")
 ```
 
-#### 2.4.3 Mis-Classified Events
+#### Mis-Classified Events
 
 By segregating the misclassified events, you can dive deeper into these data to understand why the model failed. Perhaps they were incorrectly classified in the first place (inaccurate training data) or the misclassification could be due to natural variability in the call characteristics. There are any number of possibilities, and by diving into the misclassifications, you can learn a lot about your data and your model. We do not recommend eliminating misclassifications simply because they are misclassifications. The point is to learn more about your data, not to cherry pick your data to get the best performing model.  
 
 **Case Predictions** 
 If it is important to identify only strong classification results, they can be identified and filtered using the `casePredictions()` function in `rfPermute`.
-```{r, include=TRUE}
-casePredict <- casePredictions(bant.rf)
+```{r case-pred-ta, include=TRUE}
+casePredict <- casePredictions(bant.rf_ta)
 head(casePredict)
 ```
 
 This function returns a data frame with the original and predicted species for each event along with if the event was correctly classified and the assignment probabilities to each species.  
 To identify misclassified events, we just filter this data frame and grab the original event id.
-```{r, include=TRUE}
+```{r misclass-ta, include=TRUE}
 misclass <- casePredict %>% 
   filter(!is.correct) %>%
   select(id)
@@ -186,40 +225,221 @@ casePredict[casePredict$id %in% misclass$id,]
 
 We can then look closer at these events to learn more about them.
 
-#### 2.4.4 Variable Importance
+#### Variable Importance
 
 One of the powerful features of Random Forest is the ability to assess and rank which predictors are important to the classification model. These values are based on measures of how much worse the classifier performs when the predictor variables are randomly permuted. The `importance()` function in the `randomForest` package extracts these values from a `randomForest` object.
-```{r, include=TRUE}
-# Get importance scores and convert to a data frame
-bant.imp <- data.frame(importance(bant.rf))
-head(bant.imp)
-```
 
-To see the actual distribution of these values in each species, we can first identify the most important predictors (highest importance scores)
-```{r, include=TRUE}
+To see the actual distribution of these values in each species, we can first identify the most important predictors (highest importance scores).
+
+We can then plot the distribution of the predictor variables on these classes (in this case, a violin plot for each of these four most important variables). 
+
+```{r var-imp-ta, include=TRUE}
+# Get importance scores and convert to a data frame
+bant.imp <- data.frame(importance(bant.rf_ta))
+head(bant.imp)
+
 # Select top 4 important event stage predictors
 bant.4imp <- bant.imp[order(bant.imp$MeanDecreaseAccuracy, decreasing = TRUE), ][1:4, ]
 bant.4imp
-```
 
-The predictors that showed the greatest importance came from the whistle (dw) detector and the burst pulse (bp) detectors. We can then plot the distribution of the predictor variables on these classes (in this case, a violin plot for each of these four most important variables). 
-
-```{r}
-plotImpPreds(bant.rf, bantData.df, "species", max.vars = 4)
+# plotImpPreds(bant.rf_ta, bantData.df_ta, "species", max.vars = 4)
 ```
 
 
-### 2.5 Predict
-The goal of building an acoustic classifier is to ultimately apply this classifier to novel data. It is critical to understand that we should apply our _BANTER_ classifier to data collected in the same manner. All variables (detectors, detector measures, event-level variables) must also be the same (with the same labels). For example, novel data collected using a different hydrophone with different sensitivity curves may result in different measurements from your original model (unless the data is calibrated). Even in the case where a classifier is applied to the appropriate data, it is wise to validate a subset of this novel data.  
+### Predicted with longline model
 
-To run a prediction model, you must have your _BANTER_ model, and new data. Here we will use the `bant.mdl` object we made previously, and apply it to the `test.data` provided in the _BANTER_ package.  
 
-**Predict**
-The `predict()` function will apply your _BANTER_ model to novel data and provide you with a data frame with the events used in the Event Model for predictions, and a data frame of predicted species and assignment probabilities for each event.  
-The`predict()` function will ignore any _a priori_ species designation in the event and detection data, so this can be specified if it is desired to compare model predictions with other identifications, or left un-specified.
-```{r, include=TRUE}
-# data(test.data)
-# predict(bant.mdl, test.data)
+```{r predict-ta}
+
+# predict on towed array data with longline model
+score_ta_ll <- banter::predict(bant.mdl_ll, banterAllsmall)
+save(score_ta_ll, file = file.path(path_models, 'predictions_TAbyLL.rda'))
+
+score_ta_ll$validation.matrix
+
+# predict on towed array data with glider model
+# score_ta_gl <- predict (bant.mdl_gl, banterAllsmall)
 ```
 
 
+## Longline
+
+### Model results
+
+#### Model Information
+
+**Detector Names & Sample Sizes**  
+Show the Detector Names and Sample Sizes
+```{r model-info-ll, include=TRUE}
+# Get detector names for your _BANTER_ Model
+getDetectorNames(bant.mdl_ll)
+# Get Sample sizes
+getSampSize(bant.mdl_ll)
+```
+
+**Number of Calls & Events, Proportion of Calls**  
+Number of calls (`numCalls()`), proportion of calls (`propCalls()`) and number of events (`numEvents()`) in your _BANTER_ detector models (or specify by event/species)
+```{r num-calls-ll, include=TRUE}
+# number of calls in detector model
+numCalls(bant.mdl_ll)
+# number of calls by species (can also do by event)
+numCalls(bant.mdl_ll, "species")
+
+# proportion of calls in detector model
+propCalls(bant.mdl_ll)
+# proportion of calls by event (can also do by species)
+#propCalls(bant.mdl, "event")
+#[this is commented out as printout is long]
+
+# number of events, with default for Event Model
+numEvents(bant.mdl_ll)
+# number of events for a specific detector 
+numEvents(bant.mdl_ll, "Whistle_and_Moan_Detector")
+```
+
+#### Random Forest Summaries
+
+The following functions are available in the `rfPermute` package and take a `randomForest` or `rfPermute` model object. Recall from above that the actual `randomForest` object can be extracted from the _BANTER_ model with the `getBanterModel()` function.
+
+**Confusion Matrix**  
+The Confusion Matrix is the most commonly used output for a Random Forest model, and is provided by `summary()`. The output includes the percent correctly classified for each species, the lower and upper confidence levels, and the priors (expected classification rate). 
+
+By default, `summary()` reports the 95% confidence levels of the percent correctly classified. By using the `confusionMatrix()` function, we can specify a different confidence level if desired. However, unlike `summary()`, `confusionMatrix()` takes a `randomForest` object like the one we extracted above.
+```{r confusion-matrix-ll, eval = FALSE, include=TRUE}
+# Confusion Matrix
+confusionMatrix(bant.rf_ll, conf.level = 0.75)
+```
+
+The `confusionMatrix()` function also has a `threshold` argument that provides the binomial probability that the true classification probability (given infinite data) is greater than or equal to this value. For example, if we want to know what the probability is that the true classification probability for each species is >= 0.80, we set `threshold = 0.8`:
+```{r conf-mat-threshold-ll, include = TRUE}
+# Confusion Matrix with medium threshold
+confusionMatrix(bant.rf_ll, threshold = 0.8)
+```
+This shows that _D. capensis_ has a high probability of having a true classification score above 0.8 (Pr.gt_0.8 = 79.0). Conversely, the probability that the classification rate for _D.delphis_ is above 0.8 is very low (Pr.gt_0.8 = 6.8).  
+
+And alternative view of the confusion matrix comes in the form of a heat map.
+```{r heat-map-ll, eval = FALSE}
+# Plot Confusion Matrix Heatmap
+plotConfMat(bant.rf_ll, title="Confusion Matrix HeatMap") 
+```
+
+We can also examine confusion matrices for individual detectors, such as the whistle detector ("Whistle_and_Moan_Detector"):
+```{r conf-mat-wmd-ll, eval = FALSE}
+wmd.rf <- getBanterModel(bant.mdl_ll, "Whistle_and_Moan_Detector")
+confusionMatrix(wmd.rf)
+plotConfMat(wmd.rf) 
+```
+
+**Model Percent Correct**  
+This function operates on a _BANTER_ model object and provides a summary data frame with the percent of each species correctly classified for each detector model and the event model. It is a summary of the diagonal values from the confusion matrices for all models.
+```{r pct-correct-models-ll, include=TRUE}
+modelPctCorrect(bant.mdl_ll)
+```
+
+**Plot Votes**  
+The strength of a classification model depends on the number of trees that 'voted' for the correct species. We can look at the votes from each of these 5,000 trees for an event to see how many of them were correct. This plot shows these votes where each vertical slice is an event, and the percentage of votes for each species is represented by their color. If all events for a species were to be correctly classified by all of the trees (votes) in the forest, then the plot for that species would be solid in the color that represents that species. 
+```{r plot-votes-ll, include=TRUE, fig.width = 10, fig.asp = 0.6}
+# Plot Vote distribution
+plotVotes(bant.rf_ll) 
+```
+
+**Percent Correct**  
+Another way to visualize this distribution is to evaluate the percent of events correctly classified for a given threshold (specified percent of trees in the forest voting for that species). 
+```{r pct-correct-threshold-ll, include=TRUE}
+# Percent Correct for a series of thresholds
+pctCorrect(bant.rf_ll, pct = c(0.8, 0.6, .05))
+```
+These values will always decrease as the percent of trees threshold increases. That is because as stringency is decreased (lower thresholds), more samples are likely to be correctly classified. These values give an indication of the fraction of events that can be classified with high certainty. As we can see in this example data, the distribution goes to zero for all species at 95%. That is there are no events in any species that are correctly classified with 95% certainty.  
+
+**Plot Predicted Probabilities**  
+The full distribution of assignment probabilities to the predicted species class can be visualized with the `plotPredictedProbs()` function in `rfPermute`. Ideally, all events would be classified to the correct species (identified by the color), and would be strongly classified to the correct species (higher probablity of assignment). This plot can be used to understand the distribution of these classifications, and how strong the misclassifications were, by species.
+```{r pred-prob-ll, include=TRUE, fig.width = 10, fig.asp = 0.6}
+plotPredictedProbs(bant.rf_ll, bins = 30, plot = TRUE)
+```
+
+**Proximity Plot**  
+The proximity plot provides a visualization of the distribution of events within the tree space. It shows the relative distance of events based on their average distance in nodes in the trees across the forest. For each event in the plot, the color of the central dot represents the true species identity, and the color of the circle represents the _BANTER_ classification. Ideally, these would form rather distinct clusters, one for each species. The wider the spread of the events in this feature space, the more variation found in these predictors. Some species differentiation may be predicted by other predictors and may not be clear based on this pair of dimensions (those may be differentiated with different predictors). 
+```{r prox-plot-ll, include=TRUE, fig.width = 10}
+# Proximity Plot
+plotProximity(bant.rf_ll)
+```
+
+**Importance Heat Map**  
+The importance heat map provides a visual assessment of the important predictors for the overall model. The _BANTER_ event model relies on the mean assignment probability for each of the detectors in our detector model, as well as any event level measures. For example, in this heat map, the first variable is  'dw.D.delphis', which is the mean probability that a detection was assigned to the species 'D.delphis' in the whistle detector. This requires extra steps to dig down to the specific whistle measures that are the important predictor variables for the whistle detector. 
+```{r imp-heat-map-ll, include=TRUE}
+# Importance Heat Map
+plotImportance(bant.rf_ll, plot.type = "heatmap")
+```
+
+#### Mis-Classified Events
+
+By segregating the misclassified events, you can dive deeper into these data to understand why the model failed. Perhaps they were incorrectly classified in the first place (inaccurate training data) or the misclassification could be due to natural variability in the call characteristics. There are any number of possibilities, and by diving into the misclassifications, you can learn a lot about your data and your model. We do not recommend eliminating misclassifications simply because they are misclassifications. The point is to learn more about your data, not to cherry pick your data to get the best performing model.  
+
+**Case Predictions** 
+If it is important to identify only strong classification results, they can be identified and filtered using the `casePredictions()` function in `rfPermute`.
+```{r case-pred-ll, include=TRUE}
+casePredict <- casePredictions(bant.rf_ll)
+head(casePredict)
+```
+
+This function returns a data frame with the original and predicted species for each event along with if the event was correctly classified and the assignment probabilities to each species.  
+To identify misclassified events, we just filter this data frame and grab the original event id.
+```{r misclass-ll, include=TRUE}
+misclass <- casePredict %>% 
+  filter(!is.correct) %>%
+  select(id)
+
+casePredict[casePredict$id %in% misclass$id,]
+```
+
+We can then look closer at these events to learn more about them.
+
+#### Variable Importance
+
+One of the powerful features of Random Forest is the ability to assess and rank which predictors are important to the classification model. These values are based on measures of how much worse the classifier performs when the predictor variables are randomly permuted. The `importance()` function in the `randomForest` package extracts these values from a `randomForest` object.
+
+To see the actual distribution of these values in each species, we can first identify the most important predictors (highest importance scores).
+
+We can then plot the distribution of the predictor variables on these classes (in this case, a violin plot for each of these four most important variables). 
+
+```{r var-imp-ll, include=TRUE}
+# Get importance scores and convert to a data frame
+bant.imp <- data.frame(importance(bant.rf_ll))
+head(bant.imp)
+
+# Select top 4 important event stage predictors
+bant.4imp <- bant.imp[order(bant.imp$MeanDecreaseAccuracy, decreasing = TRUE), ][1:4, ]
+bant.4imp
+
+# plotImpPreds(bant.rf_ll, bantData.df_ll, "species", max.vars = 4)
+```
+
+
+
+### Predicted with longline model
+
+```{r predict-ll}
+
+# have to change the species names
+uSp <- unique(banterDetsTrain_ll$events$species)
+uSp <- uSp[-which(uSp == 'UO' | uSp == 'Pc')]
+
+for (u in seq_along(uSp)){
+  uSpIdx <- which(banterDetsTrain_ll$events$species == uSp[u])
+  banterDetsTrain_ll$events$species[uSpIdx] <- 'UO'
+}
+
+# unique(banterDetsTrain$events$species)
+
+# Check for click_detector_0 in training dataset
+banterDetsTrain_ll$detectors$Click_Detector_0 <- NULL
+
+# predict on longline data with towed array model
+score_ll_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_ll)
+save(score_ll_ta, file = file.path(path_models, 'predictions_LLbyTA.rda'))
+
+score_ll_ta$validation.matrix
+
+# predict on towed array data with glider model
+# score_ta_gl <- predict (bant.mdl_gl, banterAllsmall)
+```
