@@ -1,0 +1,204 @@
+id,start,end,species_MW,Notes_MW,species_SF,notes_sf,species
+sg639_01,4/5/2022 20:00,4/5/2022 20:05,Y,mixed species? Looks like Pc & something else based on event report (changed to Y based on event report),MIN,Gets completely filtered out. ,MIN
+sg639_02,4/6/2022 2:48,4/6/2022 3:06,N,,X,"definitely mixed, low half of concatenated spec looks like Pc, second too high",X
+sg639_03,4/7/2022 2:49,4/7/2022 2:50,Y,"whistles faint but look right, clicks ok",Pc,"very few whistles, going with MW assessment",Pc
+sg639_04,4/7/2022 7:55,4/7/2022 8:49,N,,UO,clicks too high,UO
+sg639_05,4/7/2022 14:01,4/7/2022 14:04,?,"low clicks look like sperm whale, possible some higher clicks are Pc but event report too messy to be sure",Pm,,Pm
+sg639_06,4/8/2022 8:42,4/8/2022 9:22,N,,UO,"clicks too high, whistles are false positives",UO
+sg639_07,4/9/2022 5:58,4/9/2022 6:23,Y,"lots of good whistles, clicks seem right",Pc,,Pc
+sg639_09,4/11/2022 15:48,4/11/2022 15:59,N,whistles a little high so unconvincing (changed to N based on event report),UO,whistles too high,UO
+sg639_10,4/12/2022 6:15,4/12/2022 6:57,?,too few whistles to be diagnostic but clicks could be right for Pc,UO,"clicks bit too high, whistles look like false positives",UO
+sg639_11,4/12/2022 13:06,4/12/2022 15:20,?,clicks seem right but whistles seem too high or too low for typical Pc,X,"whistles are false positives, clicks could be correct",X
+sg639_12,4/12/2022 17:50,4/12/2022 18:17,?,"no whistles, only clicks, seem a bit low in event report but maybe?",UO,clicks too low,UO
+sg639_13,4/15/2022 14:11,4/15/2022 15:03,N,,UO,clicks and whistles too high,UO
+sg639_14,4/16/2022 0:59,4/16/2022 1:07,?,"clicks possibly right, but only 1 whistle so not diagnostic",X,clicks in right range but very narrow band,X
+sg639_15,4/19/2022 12:08,4/19/2022 13:07,N,,NA_UO,"clicks too high, many false positive whistles",NA_UO
+sg639_16,4/20/2022 22:53,4/21/2022 0:48,Y,"lots of good whistles, clicks seem right",Pc,,Pc
+sg639_17,4/21/2022 20:20,4/21/2022 21:06,N,"low sperm whale clicks, 2 whistles too low for Pc (?->N based on click report)",Pm,whistles are false positives,Pm
+sg639_19,4/22/2022 3:36,4/22/2022 3:43,?,only 14 clicks & no whistles,X,,X
+sg639_20,4/22/2022 5:54,4/22/2022 6:04,N,"clicks look like Gm, 1 whistle that's not convincing for Pm (?->N based on event report)",X,,X
+sg639_21,4/22/2022 11:24,4/22/2022 12:24,N,,UO,clicks and whistles too high,UO
+sg639_22,4/23/2022 2:20,4/23/2022 2:21,?,"low clicks look like sperm whale, possible some higher clicks are Pc? (only 1 valid click in event report)",MIN_X,,MIN_X
+sg639_23,4/23/2022 8:29,4/23/2022 9:42,N,"clicks look like Gm, whistles not typical for Pm (?->N based on event report)",NA_UO,all whistles false positives,NA_UO
+sg639_24,4/25/2022 3:23,4/25/2022 4:45,?,clicks look ok for Pc but whistles seem too low,Pm,absolutely sperm whales,Pm
+sg639_25,4/27/2022 10:33,4/27/2022 11:02,N,"clicks look like Gm, whistles too low for Pc (?->N based on event report)",UO,clicks too high,UO
+sg639_26,4/28/2022 10:48,4/28/2022 11:42,N,,UO,clicks too high,UO
+sg639_27,4/28/2022 22:20,4/28/2022 23:40,N,"whistles lower but are sometimes long/complex for Pc, clicks look like Gm (?->N based on event report)",NA_UO,"clicks too high, some clipped? But lots of good whistles so want to include but can't because of clicks",NA_UO
+sg639_28,4/29/2022 7:33,4/29/2022 9:20,N,whistles low but way too long/complicated,UO,,UO
+sg639_30,4/29/2022 13:50,4/29/2022 14:04,N,,UO,,UO
+sg639_31,5/2/2022 11:53,5/2/2022 12:40,N,"clicks too high, few whistles but not typical for Pc (?->N based on event report)",NA_UO,"lots of good clicks, but again some clipped clicks, several whistle false positives",NA_UO
+sg639_32,5/3/2022 5:05,5/3/2022 5:20,N,"clicks too high, few whistles too low for typical Pc (?->N based on event report)",NA_UO,presence of clipped clicks,NA_UO
+sg639_33,5/4/2022 6:03,5/4/2022 6:52,N,,UO,clicks too high,UO
+sg639_34,5/4/2022 11:38,5/4/2022 12:50,N,,UO,clicks too high,UO
+sg639_35,5/5/2022 21:52,5/5/2022 22:39,N,,UO,"Suspect this is Gm, banding in concatenated spec and fits avg spec high end nicely",UO
+sg639_36,5/5/2022 23:08,5/5/2022 23:12,?,"only 38 clicks, event report too messy to tell if Pc",UO,clicks too high,UO
+sg639_37,5/6/2022 6:54,5/6/2022 7:07,N,,UO,clicks too high,UO
+sg639_38,5/6/2022 7:26,5/6/2022 7:43,N,"clicks too high, whistles too stereotyped for Pc",UO,"clicks too high, very repeated whistles but too high",UO
+sg639_39,5/6/2022 10:55,5/6/2022 11:13,?,"clicks fairly messy but seem a bit high, 1 whistle too low for Pc",UO,clicks too high,UO
+sg639_40,5/6/2022 13:12,5/6/2022 14:45,?,"clicks could be ok, whistles in right range but not especially diagnostic",NA_X,clicks could be ok but nearly all whistles are false positives,NA_X
+sg639_41,5/6/2022 16:10,5/6/2022 16:40,N,"clicks too high, 2 whistles too low for Pc (?->N based on event report)",NA_X,mix of good and clipped clicks,NA_X
+sg639_42,5/6/2022 17:10,5/6/2022 17:20,?,"only 10 clicks & 2 whistles, not especially diagnostic",UO,clicks too high,UO
+sg639_43,5/7/2022 4:09,5/7/2022 4:47,N,"clicks too high, 2 whistlles look too complex for PC (?->N based on event report)",UO,clicks too high,UO
+sg639_44,5/8/2022 18:46,5/8/2022 19:22,?,"clicks look ok, whistles in right range but not entirely convinced",X,"clicks in right range but whistles aren't super Pc-like, but in ok range and some repeated types",X
+sg639_45,5/9/2022 11:31,5/9/2022 12:18,N,,UO,clicks and whistles too high,UO
+sg639_46,5/10/2022 12:34,5/10/2022 13:25,N,,UO,clicks too high,UO
+sg639_47,5/11/2022 19:01,5/11/2022 19:18,N,,UO,"clicks too high, whistle is false positive",UO
+sg639_48,5/16/2022 1:54,5/16/2022 2:12,?,"only clicks, might be Pc but a little lower than usual",NA_RM,not sure animals,NA_RM
+sg639_49,5/17/2022 5:43,5/17/2022 7:26,N,,UO,clicks and whistles too high,UO
+sg639_51,5/17/2022 8:36,5/17/2022 9:25,N,,UO,clicks and whistles too high,UO
+sg639_52,5/17/2022 12:32,5/17/2022 13:12,N,,UO,clicks and whistles too high,UO
+sg639_53,5/17/2022 14:10,5/17/2022 15:01,N,,UO,clicks and whistles too high,UO
+sg639_54,5/17/2022 18:47,5/17/2022 19:37,Y,"mixed species? Clicks look right & so do most whistles, but some a bit long/complex for Pc",X,clicks look ok and some whistles look good but others too high and long and variable,X
+sg639_56,5/18/2022 11:36,5/18/2022 12:10,N,,UO,clicks too high,UO
+sg639_57,5/20/2022 18:03,5/20/2022 19:04,Y,"clicks look ok for Pc, whistles in right range (?->Y based on event report)",NA_X,all whistles are false positives,NA_X
+sg639_58,5/24/2022 20:49,5/24/2022 21:58,N,"whistles lower but are long/complex for Pc, clicks too high (?->N based on event report)",UO,clicks and whistles too high,UO
+sg639_59,5/25/2022 6:55,5/25/2022 7:11,N,,UO,clicks too high,UO
+sg639_60,5/25/2022 10:51,5/25/2022 11:13,N,,UO,clicks too high,UO
+sg639_61,5/26/2022 0:45,5/26/2022 0:54,N,whistles low but way too long/complicated & clicks too high,UO,clicks and whistles too high,UO
+sg639_63,5/26/2022 14:36,5/26/2022 15:01,N,,UO,clicks too high,UO
+sg639_64,5/28/2022 12:23,5/28/2022 13:04,N,clicks seem high & whistles wrong shape for Pc (?->N based on event report),UO,clicks too high,UO
+sg639_65,5/28/2022 20:27,5/28/2022 21:09,Y,faint whistles ~10 kHz but still kinda low and still pretty faint,X,whistles too high and complex to be definite Pc ,X
+sg639_66,5/31/2022 20:43,5/31/2022 21:11,N,"clicks too high, 2 whistles too low for Pc (?->N based on event report)",NA_UO,many clipped/false pos clicks,NA_UO
+sg639_67,6/2/2022 9:43,6/2/2022 10:25,N,,NA_UO,clicks too high but all whistles false positives,NA_UO
+sg639_68,6/2/2022 12:18,6/2/2022 12:50,Y,"mixed species? Some whistles & clicks look right for Pc, others clearly too high/complex (?->Y based on event report)",NA_UO,"clicks too high, whistles stair-steppy - many of them are false psoitives",NA_UO
+sg639_69,6/2/2022 13:09,6/2/2022 13:30,?,"clicks kinda messy & could be right, concentration of whistles are right shape but a bit high, others too long/complex",NA_X,clicks maybe ok but too many false positive whistles too include,NA_X
+sg639_70,6/2/2022 15:18,6/2/2022 15:30,N,,NA_X,whistles all false positives,NA_X
+sg639_71,6/2/2022 17:02,6/2/2022 19:16,N,,NA_UO,clicks too high and whistles too high but too many false positives,NA_UO
+sg639_74,6/2/2022 23:05,6/2/2022 23:15,Y,"mixed species? Low sperm whale clicks, event report has too few clicks to be diagnostic (5) but whistles look right (?->Y based on click report)",NA_X,whistles all false positives,NA_X
+sg639_75,6/3/2022 0:58,6/3/2022 1:35,N,,UO,"clicks too high, whistles high and variable",UO
+sg639_76,6/3/2022 7:51,6/3/2022 18:12,N,whistles low but way too long/complicated,UO,"clicks too high, whistles high and variable",UO
+sg639_01,4/12/2023 5:17,4/12/2023 5:54,N,"event report shows that clicks don't look much like Pc, few whistles that are too low for Pc (changed from ?->N based on event report)",UO,few whistles are false positives but leaving because so few,UO
+sg639_02,4/12/2023 6:34,4/12/2023 7:30,N,,UO,clicks too high,UO
+sg639_04,4/12/2023 8:21,4/12/2023 13:21,N,"event report shows clicks look more like Gm than Pc, whistles too variable to be convincing for Pc",NA_X,interesting clicks but too many false positive whistles to include,NA_X
+sg639_05,4/12/2023 13:46,4/12/2023 16:00,N,,UO,clicks and whistles too high,UO
+sg639_06,4/12/2023 21:38,4/12/2023 22:40,Y,whistles & clicks,Pc,some false positive whistles probably in there…,Pc
+sg639_07,4/13/2023 6:02,4/13/2023 7:45,N,,UO,some clicks maybe ok but most too high,UO
+sg639_08,4/13/2023 12:12,4/13/2023 14:33,N,,UO,clicks and whistles too high,UO
+sg639_09,4/13/2023 15:32,4/13/2023 16:41,N,,UO,clicks and whistles too high,UO
+sg639_10,4/13/2023 17:33,4/13/2023 17:40,N,higher (15-20kHz) longer (~1s) whistles,UO,whistles too high,UO
+sg639_11,4/13/2023 23:59,4/14/2023 0:08,N,,UO,whistles too variable (from LTSA not so much in report),UO
+sg639_12,4/14/2023 5:42,4/14/2023 6:57,N,,UO,clicks too high,UO
+sg639_13,4/14/2023 7:54,4/14/2023 8:51,N,delphinid whistles & clicks,UO,clicks too high,UO
+sg639_14,4/14/2023 10:01,4/14/2023 10:29,N,,UO,clicks too high,UO
+sg639_15,4/14/2023 12:58,4/14/2023 15:18,N,"clicks & faint whistles, likely dolphin",UO,clicks too high,UO
+sg639_17,4/14/2023 18:50,4/14/2023 19:38,N,delphinid whistles & clicks,NA_UO,many clipped/false pos clicks,NA_UO
+sg639_18,4/15/2023 13:16,4/15/2023 14:06,N,,UO,clicks too high,UO
+sg639_19,4/16/2023 9:15,4/16/2023 9:20,N,,UO,clicks too high,UO
+sg639_20,4/16/2023 9:43,4/16/2023 9:57,N,"event report shows clicks too high-frequency for Pc, few whistles but a bit high/long for Pc (changed ?->N based on click report)",UO,clicks too high,UO
+sg639_21,4/16/2023 12:16,4/16/2023 14:23,N,,UO,clicks too high,UO
+sg639_22,4/16/2023 14:49,4/16/2023 14:56,N,,NA_X,most whistles false positives,NA_X
+sg639_23,4/17/2023 14:27,4/17/2023 15:30,N,sperm whale clicks,NA_X,mostly sperm whales but some actual whistles in there at some point - mixed group,NA_X
+sg639_24,4/17/2023 17:10,4/17/2023 19:56,N,sperm whale clicks,NA_Pm,"sperm whale clicks, all whistles false pos",NA_Pm
+sg639_25,4/17/2023 21:30,4/17/2023 21:53,N,sperm whale clicks,Pm,,Pm
+sg639_26,4/18/2023 5:48,4/18/2023 6:29,N,mixed dolphin & sperm clicks,UO,"clicks too high, I don't see sperm whale clicks in concatenated spec but maybe they were excluded for low SNR",UO
+sg639_27,4/18/2023 8:28,4/18/2023 9:30,N,,UO,clicks too high,UO
+sg639_28,4/19/2023 12:15,4/19/2023 12:39,N,,UO,clicks too high,UO
+sg639_29,4/20/2023 1:11,4/20/2023 1:55,N,,UO,clicks and whistles too high,UO
+sg639_30,4/20/2023 2:37,4/20/2023 3:05,N,delphinid whistles,UO,whistles too high,UO
+sg639_31,4/20/2023 10:16,4/20/2023 12:16,N,,NA_UO,clicks too high but MANY false pos whistles,NA_UO
+sg639_32,4/20/2023 22:45,4/20/2023 23:03,N,,NA_UO,clicks too high but MANY false pos whistles,NA_UO
+sg639_33,4/21/2023 8:27,4/21/2023 8:57,N,,UO,clicks too high,UO
+sg639_34,4/21/2023 9:28,4/21/2023 10:34,N,mixed dolphin & sperm clicks,NA_X,"mixing clear in concatenated spec, all whistles are false positives",NA_X
+sg639_35,4/22/2023 23:59,4/23/2023 0:31,?,"very few whistles, event report click graph looks strange",NA_X,all whistles are false positives,NA_X
+sg639_36,4/23/2023 6:02,4/23/2023 6:19,N,,UO,clicks too high,UO
+sg639_37,4/23/2023 9:23,4/23/2023 10:05,N,,UO,clicks too high,UO
+sg639_38,4/23/2023 14:58,4/23/2023 15:01,N,sperm whale clicks,NA_MIN,filtered out,NA_MIN
+sg639_39,4/23/2023 16:39,4/23/2023 19:52,N,mixed dolphin & sperm clicks,NA_X,mixed with something super high?? All whistles are false positives,NA_X
+sg639_41,4/23/2023 21:14,4/23/2023 22:48,N,sperm whale clicks,NA_Pm,all whistles are false positives,NA_Pm
+sg639_42,4/24/2023 5:37,4/24/2023 6:25,N,,UO,clicks and whistles too high,UO
+sg639_43,4/25/2023 9:53,4/25/2023 10:10,N,,UO,clicks and whistles too high,UO
+sg639_44,4/25/2023 14:39,4/25/2023 14:53,N,,UO,"clicks too high, banding, maybe Gg?",UO
+sg639_45,4/25/2023 20:29,4/25/2023 20:50,Y,whistles & clicks,Pc,not a ton of signals but look good!,Pc
+sg639_46,4/26/2023 17:25,4/26/2023 17:30,N,"lower but long/complex dolphin whistles, clicks too high for Pc",UO,whistles too high,UO
+sg639_47,4/27/2023 6:35,4/27/2023 6:46,N,,UO,"banding in concatenated spec maybe Gg, whistles are false pos",UO
+sg639_48,4/27/2023 11:10,4/27/2023 12:18,N,,NA_UO,"clicks too high, most whistles false positives",NA_UO
+sg639_49,4/27/2023 14:50,4/27/2023 15:28,N,,UO,"clicks too high, whistles are intersting…",UO
+sg639_50,4/28/2023 7:04,4/28/2023 7:57,N,,UO,"clicks too high, most whistles false positives",UO
+sg639_52,4/28/2023 12:58,4/28/2023 13:17,N,sperm whale clicks,Pm,4 false positive whistles,Pm
+sg639_53,4/28/2023 13:45,4/28/2023 18:56,N,sperm whale clicks,NA_X,"very long encounter, mix of sperm whale clicks and dolphin clicks? Whistles too high for Pc",NA_X
+sg639_54,4/28/2023 20:53,4/28/2023 22:38,N,sperm whale clicks,NA_Pm,whistles all false positives,NA_Pm
+sg639_55,4/29/2023 4:49,4/29/2023 5:08,N,sperm whale clicks,Pm,,Pm
+sg639_56,4/29/2023 5:48,4/29/2023 6:43,N,,UO,clicks and whistles too high,UO
+sg639_57,4/29/2023 11:37,4/29/2023 12:23,N,clicks & low/long whistle/moans,UO,burst pulses rather than whistles?,UO
+sg639_58,4/29/2023 21:53,4/29/2023 22:20,N,,UO,"clicks too high, whistles are false positives",UO
+sg639_59,4/30/2023 7:34,4/30/2023 8:17,N,,UO,clicks and whistles too high,UO
+sg639_60,4/30/2023 11:33,4/30/2023 11:56,N,sperm whale clicks,NA_Pm,mixed with something else?,NA_Pm
+sg639_61,4/30/2023 12:31,4/30/2023 14:20,N,sperm whale clicks,Pm,,Pm
+sg639_63,4/30/2023 14:38,4/30/2023 15:32,N,sperm whale clicks,Pm,,Pm
+sg639_64,4/30/2023 16:08,4/30/2023 19:31,N,sperm whale clicks,NA_Pm,exclude because too many false positive whistles,NA_Pm
+sg639_66,4/30/2023 23:23,5/1/2023 0:02,N,"low, really fast clicks, too low for Pc, only 2 whistles & neither very convincing (changed ?->N based on event report)",Pm,multiple sperm whales?,Pm
+sg639_67,5/1/2023 13:24,5/1/2023 13:32,N,,UO,clicks too high,UO
+sg639_68,5/1/2023 14:02,5/1/2023 14:09,N,,UO,clicks too high,UO
+sg639_69,5/1/2023 15:03,5/1/2023 15:10,N,,UO,clicks too high,UO
+sg639_70,5/2/2023 4:46,5/2/2023 4:58,N,"clicks too high, only 2 whistles that aren't super convincing (changed ?->N based on event report)",UO,clicks too high,UO
+sg639_71,5/2/2023 14:12,5/2/2023 14:14,N,,UO,clicks too high,UO
+sg639_72,5/3/2023 6:09,5/3/2023 9:30,N,,UO,clicks and whistles too high,UO
+sg639_73,5/3/2023 13:34,5/3/2023 13:48,N,,UO,clicks too high,UO
+sg639_74,5/4/2023 14:41,5/4/2023 15:23,N,,UO,clicks too high,UO
+sg639_75,5/5/2023 8:26,5/5/2023 8:31,N,,UO,clicks too high,UO
+sg639_76,5/5/2023 8:56,5/5/2023 9:51,N,delphinid clicks & whistles,UO,clicks and whistles too high,UO
+sg639_77,5/6/2023 5:55,5/6/2023 6:40,N,,UO,clicks too high but whistles could be in right range (some false pos),UO
+sg639_78,5/6/2023 9:00,5/6/2023 9:26,?,"clicks look more like Gm than Pc, few whistles that might be right but not definitive",NA_UO,whistles are false positives,NA_UO
+sg639_79,5/6/2023 10:22,5/6/2023 12:34,N,,UO,clicks and whistles too high,UO
+sg639_80,5/6/2023 13:06,5/6/2023 13:23,N,,UO,clicks too high,UO
+sg639_81,5/6/2023 14:41,5/6/2023 15:25,N,,UO,clicks and whistles too high,UO
+sg639_82,5/7/2023 6:26,5/7/2023 8:17,N,dolphin & sperm whale clicks,NA_X,remove if mixed group,NA_X
+sg639_83,5/7/2023 8:37,5/7/2023 9:32,N,dolphin & sperm whale clicks,NA_X,remove if mixed group,NA_X
+sg639_84,5/7/2023 11:38,5/7/2023 12:16,N,,UO,clicks and whistles too high,UO
+sg639_85,5/7/2023 13:36,5/7/2023 13:51,N,,UO,clicks too high,UO
+sg639_86,5/7/2023 14:13,5/7/2023 14:15,N,"only clicks, too high for Pc (changed ?->N based on event report)",UO,clicks too high,UO
+sg639_87,5/7/2023 18:58,5/7/2023 19:08,N,sperm whale clicks,NA_MIN,only 1 click,NA_MIN
+sg639_88,5/9/2023 4:40,5/9/2023 4:58,?,only 3 clicks & 3 whistles,NA_MIN,only 3 clicks,NA_MIN
+sg639_89,5/9/2023 7:50,5/9/2023 7:53,N,,UO,clicks too high,UO
+sg639_90,5/9/2023 11:31,5/9/2023 11:44,N,,UO,clicks too high,UO
+sg639_91,5/10/2023 1:17,5/10/2023 2:06,N,,UO,"clicks too high, high whistles are harmonics",UO
+sg639_92,5/10/2023 3:46,5/10/2023 4:08,N,,UO,clicks and whistles too high,UO
+sg639_93,5/10/2023 12:15,5/10/2023 12:55,N,dolphin & sperm whale clicks,NA_X,remove if mixed group,NA_X
+sg639_94,5/10/2023 15:52,5/10/2023 16:48,N,sperm whale clicks,Pm,whistles are fps,Pm
+sg639_95,5/11/2023 0:27,5/11/2023 0:33,N,,UO,banding in concatenated spec maybe Gg,UO
+sg639_96,5/11/2023 2:14,5/11/2023 2:37,N,,NA_X,not enough signals to decide,NA_X
+sg639_97,5/11/2023 9:26,5/11/2023 10:20,N,,UO,"clicks too high, whistles are false positives",UO
+sg639_98,5/12/2023 7:24,5/12/2023 7:53,Y,"clicks could be Pc, some whistles look like Pc (changed ?->Y based on event report)",X,"not enough clicks to decide anything, whistles are false positives",X
+sg639_99,5/12/2023 15:48,5/12/2023 16:11,Y,"too few clicks to make a decision, but good chunk of whistles look right while others too long/high (change ?->Y based on click report)",X,"not enough clicks to decide anything, whistles are false positives",X
+sg639_100,5/12/2023 22:54,5/13/2023 0:05,Y,"clicks seem right, most whistles look right for Pc (change ?->Y based on event report)",Pc,,Pc
+sg639_101_1,5/13/2023 1:10,5/13/2023 3:25,Y,"whistles & clicks (clicks at right frequency, majority of whistles in right range)",Pc,This is actually an insanely long encounter of Pc with tons of whistles. In last 10-15 mins there look to be some type of higher freq click so creating new event for that.,Pc
+sg639_101_2,5/13/2023 3:25,5/13/2023 3:42,,,UO,clicks too high,UO
+sg639_102,5/13/2023 7:54,5/13/2023 8:37,?,"clicks seem high, but whistles look to be in right range",NA_UO,clicks too high but all whistles false positives,NA_UO
+sg639_103,5/13/2023 9:11,5/13/2023 9:33,Y,"too few clicks to make a decision, but good chunk of whistles look right while others too long/high (change ?->Y based on click report)",NA_X,most whistles false positives,NA_X
+sg639_104,5/13/2023 17:15,5/13/2023 18:12,Y,clicks & whistles look right for Pc (changed ?->Y based on event report),Pc,,Pc
+sg639_105,5/13/2023 19:28,5/13/2023 22:32,Y,clicks & whistles,Pc,some clipped clicks but want to include because good Pc!,Pc
+sg639_106,5/13/2023 23:35,5/14/2023 0:17,Y,clicks & whistles,Pc,,Pc
+sg639_107,5/14/2023 0:41,5/14/2023 1:52,Y,clicks & whistles,Pc,,Pc
+sg639_108,5/14/2023 2:36,5/14/2023 3:38,N,dolphin whistles & clicks,NA_UO,"clicks too high, many false positive whistles",NA_UO
+sg639_109,5/14/2023 13:44,5/14/2023 14:32,N,,UO,clicks too high,UO
+sg639_110,5/15/2023 12:19,5/15/2023 12:34,N,,UO,clicks too high,UO
+sg639_111,5/16/2023 8:35,5/16/2023 9:00,?,"mixed species? Event report shows most clicks too high, but whistles look right for Pc ",NA_UO,"clicks too high, whistles are all false positives",NA_UO
+sg639_112,5/16/2023 10:46,5/16/2023 11:09,N,,UO,clicks too high,UO
+sg639_113,5/16/2023 11:51,5/16/2023 11:58,N,,UO,clicks too high,UO
+sg639_114,5/16/2023 14:01,5/16/2023 16:25,N,,UO,clicks and whistles too high,UO
+sg639_115,5/17/2023 10:45,5/17/2023 11:20,N,,UO,clicks and whistles too high,UO
+sg639_116,5/19/2023 9:43,5/19/2023 12:03,N,sperm whale clicks,Pm,,Pm
+sg639_117,5/19/2023 13:39,5/19/2023 16:54,N,sperm whale clicks,Pm,,Pm
+sg639_118,5/19/2023 20:50,5/19/2023 21:10,N,sperm whale clicks,Pm,,Pm
+sg639_119,5/23/2023 6:24,5/23/2023 7:43,?,mixed species? (clicks look more like Gm but whistles could be Pc),NA_UO,clicks maybe ok but really too high and most whistles are false positives,NA_UO
+sg639_120,5/23/2023 17:28,5/23/2023 17:51,N,,UO,clicks too high,UO
+sg639_121,5/24/2023 4:01,5/24/2023 5:18,N,dolphin signals,UO,"strongly guess this is Gm, some clipped clicks",UO
+sg639_122,5/26/2023 8:45,5/26/2023 9:52,N,,UO,clicks and whistles too high,UO
+sg639_123,5/26/2023 21:46,5/26/2023 22:09,?,only 9 clicks & 2 whistles,NA_MIN,can't tell anything,NA_MIN
+sg639_124,5/27/2023 13:19,5/27/2023 13:48,N,"clicks look too high for Pc, whistles too low (changed ?->N based on click report)",UO,narrow 20 kHz clicks,UO
+sg639_125,5/28/2023 12:20,5/28/2023 14:20,N,"dolphin signals, maybe sperm whale",UO,Gm again?,UO
+sg639_126,5/29/2023 1:47,5/29/2023 2:12,?,"clicks look right in event report, too few whistles to be diagnostic",X,"clicks in right range but not that many of them, only 1 good whistle",X
+sg639_127,5/29/2023 3:26,5/29/2023 3:45,?,"28 valid clicks, too messy to be diagnostic ab species",X,clicks in maybe right range but maybe too high,X
+sg639_128,5/29/2023 10:33,5/29/2023 11:43,N,"clicks too high, few whistles that seem low for Pc (changed ?->N based on event report)",UO,"clicks too high, whistles are false positives",UO
+sg639_129,5/30/2023 9:02,5/30/2023 9:28,N,"Clicks look like Gm, only 1 whistle that's a bit low for Pc (changed ?->N based on click report)",UO,clicks too high,UO
+sg639_130,5/30/2023 14:51,5/30/2023 15:39,N,"clicks too high, few whistles that seem low for Pc (changed ?->N based on event report)",UO,"clicks too high, banding, maybe Gg? All whistles are fp",UO
+sg639_131,5/31/2023 5:41,5/31/2023 5:47,N,,UO,clicks too high,UO
+sg639_132,6/2/2023 5:03,6/2/2023 7:40,N,,UO,"Suspect Gm, banding in concatenated/avg spec. Many whistles are false positives though",UO
+sg639_134,6/2/2023 9:14,6/2/2023 9:54,?,"clicks look too high, but few present whistles technically in right range",UO,clicks too high,UO
+sg639_135,6/3/2023 10:49,6/3/2023 11:10,N,,UO,clicks too high,UO
+sg639_136,6/3/2023 11:46,6/3/2023 12:01,N,,UO,clicks too high,UO
+sg639_137,6/3/2023 13:11,6/3/2023 13:25,N,,NA_UO,"clicks too high, but too many false positive whistles",NA_UO
+sg639_138,6/4/2023 7:02,6/4/2023 7:41,N,,NA_UO,"clicks too high, but too many false positive whistles",NA_UO
+sg639_139,6/4/2023 9:26,6/4/2023 10:28,N,dolphin signals,UO,maybe Gm?,UO
+sg639_140,6/4/2023 12:26,6/4/2023 12:50,N,,UO,clicks too high,UO
+sg639_141,6/5/2023 8:47,6/5/2023 10:05,N,,UO,"clicks too high, maybe Gm",UO
