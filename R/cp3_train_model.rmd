@@ -1,0 +1,186 @@
+---
+title: "Train Combined BANTER Model"
+author: "Selene Fregosi"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+geometry: margin = 1cm
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 4
+    # code_folding: hide
+    # keep_md: yes
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      # cache = FALSE, 
+                      # warning = FALSE, 
+                      message = FALSE
+)
+```
+
+## Purpose
+
+To train a BANTER model with towed array, longline, and glider data. 
+
+## Set up
+
+### Load libraries
+```{r libraries}
+library(banter)
+library(rfPermute)
+library(ggplot2)
+library(beepr)
+```
+
+### Set paths and run type
+```{r set-paths}
+# path to save models
+# path_models <- file.path('T:/glider_MHI_analysis', 'classification', 'models')
+# path_models <- file.path('Z:/LLHARP/analysis/banterModels')
+path_models <- file.path('T:/fregosi/cross_platform_banter_big_data/models')
+
+# Re-generate/train model (1) or load existing model to view results (0)
+freshRun <- 1
+```
+
+## Load training data
+
+Training data was created for each platform individually
+
+Alternatively, if this is not a fresh run to train a new model, load an existing model and just look at the results. 
+
+```{r load-data}
+
+if (freshRun == 1){
+  tf_ta <- file.path('R:/McCullough/PAMpal/Banter_TowedArray_Data/', 
+                     'banterAllsmall_HICEAS2017-CH5_Filtered-577.rdata')
+  tf_ll <- file.path('T:/fregosi/cross_platform_banter_big_data', 
+                     'banterDetsTrain_LLHARP_2024-05-27.rda')
+  tf_gl <- file.path('T:/fregosi/cross_platform_banter_big_data', 
+                     'banterDetsTrain_glider_2024-05-28.rda')
+  
+  #initialize events df
+  allEvents <-NULL
+  allDetectors <-NULL
+  load(tf_ta)
+  
+  # change species codes
+  idx577 <- which(banterAllsmall$events$species == '577')
+  banterAllsmall$events$species[idx577] <- 'UO'
+  idx33 <- which(banterAllsmall$events$species == '33')
+  banterAllsmall$events$species[idx33] <- 'Pc'
+  
+  # assemble events
+  allEvents <- banterAllsmall$events
+  # assemble detectors
+  allDetectors <-banterAllsmall$detectors
+  
+  # add longline
+  load(tf_ll)
+  allEvents <- rbind(allEvents, banterDetsTrain$events)
+  allDetectors <- c(allDetectors, banterDetsTrain$detectors)
+  
+  # add glider
+  load(tf_gl)
+  allEvents <- rbind(allEvents, banterDetsTrain$events)
+  allDetectors <- c(allDetectors, banterDetsTrain$detectors)
+  
+  # collapse the data.frames
+  allDetectors <- tapply(allDetectors, names(allDetectors), dplyr::bind_rows)
+  
+} else if (freshRun == 0){
+  # modelFile <- file.path(path_models, 'LLHARP_BANTER_2class_2023-05-31.rda')
+  modelFile <- file.path(path_models, 'bantMDL_combined_2024-05-28.rda')
+  load(modelFile)
+  cat('Loaded existing model:', modelFile, '\n')
+}
+
+```
+
+## Clean data
+
+If the training data contains species other than just `Pc` or `UO`, they need to be cleaned up. Replace all non-Pc entries with `UO`. 
+
+Also, remove any 'Click_Detector_0' detections. 
+
+```{r clean}
+
+if (freshRun == 1){
+  uSp <- unique(allEvents$species)
+  uSp <- uSp[-which(uSp == 'UO' | uSp == 'Pc')]
+  
+  for (u in seq_along(uSp)){
+    uSpIdx <- which(allEvents$species == uSp[u])
+    allEvents$species[uSpIdx] <- 'UO'
+  }
+  
+  # unique(allEvents$species)
+  
+  # Check for click_detector_0 in training dataset
+  allDetectors$Click_Detector_0 <- NULL
+}
+
+```
+
+## Build the model
+```{r build}
+
+if (freshRun == 1){
+  # build the model
+  bant.mdl <- initBanterModel(allEvents)
+  bant.mdl <- addBanterDetector(
+    bant.mdl,
+    data =  allDetectors, 
+    ntree = 10000,
+    sampsize = 5,
+    importance = TRUE,
+    num.cores = 1
+  )
+  bant.mdl <- runBanterModel(bant.mdl, ntree = 10000, sampsize = 5)
+  
+  # save model
+  save(bant.mdl, file = file.path(path_models, paste0('bantMDL_combined_',
+                                                      Sys.Date(), '_ss5_nt10k.rda')))
+  
+  # get random forest data and save
+  event.rf <- getBanterModel(bant.mdl, "event")
+  save(event.rf, file = file.path(path_models, paste0('eventRF_combined_',
+                                                      Sys.Date(), '_ss5_nt10k.rda')))
+} else if (freshRun == 0){
+  event.rf <- getBanterModel(bant.mdl, "event")
+  cat('No model trained. Showing results from existing model:', modelFile, '\n')
+}
+
+# beepr::beep()
+
+```
+
+## View results
+
+### Overall results (event model)
+```{r results-overall}
+
+summary(bant.mdl)
+plotVotes(event.rf)
+plotProximity(event.rf)
+
+```
+
+### Detector results (detector models)
+```{r results-detectors}
+detList <- names(bant.mdl@detectors)
+
+for (d in seq_along(detList)){
+  cat(detList[d], '\n')
+  plotTrace(getBanterModel(bant.mdl, model = detList[d]))
+  #plotInbag(getBanterModel(bant.mdl, model = d))
+  # print(table(getBanterModel(bant.mdl, model = d)$oob.times))
+}
+
+```
+
+
+
+
