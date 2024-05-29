@@ -35,7 +35,7 @@ library(tidyverse)
 
 # ------ USER DEFINED INPUTS ----------------------------------------------
 # define glider mission and PG version
-mission <- 'sg639_MHI_Apr2022'
+mission <- 'sg639_MHI_Apr2023'
 pgVer <- '20207b'
 
 # define transfer function
@@ -46,7 +46,7 @@ path_analysis <- 'T:/glider_MHI_analysis'
 # path_pg <- 'T:/glider_MHI_analysis/pamguard'
 # path_out <- 'T:/glider_MHI_analysis/classification'
 
-path_llamp <- 'Z:/LLHARP/processingCode/llamp' # bc pull some functions from llamp
+# path_llamp <- 'Z:/LLHARP/processingCode/llamp' # bc pull some functions from llamp
 
 # ### configurable PAMpal settings - typically DO NOT change ###
 sr_hz          <- 'auto'
@@ -69,8 +69,10 @@ binDir <- file.path(path_pg, 'binaries', paste0(pgVerPrfx, '_glider_banter_',
 dbFile <- file.path(path_pg, 'databases', paste0(pgVerPrfx, '_glider_banter_', 
                                                    mission, '.sqlite3'))
 # merged triton log file
+# logFile <- file.path(path_analysis, 'triton', 'merged_logs', 
+#                           paste0(mission, '_log_merged.csv'))
 logFile <- file.path(path_analysis, 'triton', 'merged_logs', 
-                          paste0(mission, '_log_merged.csv'))
+                     paste0(mission, '_log_merged_edits_2024-05-28.csv'))
 
 # files to be created
 paramFile <- file.path(path_analysis, 'classification', 'params', 
