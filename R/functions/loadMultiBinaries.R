@@ -18,9 +18,9 @@ loadMultiBinaries <- function(wmBinFiles){
   
   binOut <- list() # create output that will compile across files
   for (f in 1:length(wmBinFiles)){
-    whBin <- loadPamguardBinaryFile(wmBinFiles[f], convertDate = TRUE)
+    whBin <- PamBinaries::loadPamguardBinaryFile(wmBinFiles[f], convertDate = TRUE)
     # get contour frequency and time info
-    whBinCont <- contourToFreq(whBin$data, verbose = FALSE)
+    whBinCont <- PamBinaries::contourToFreq(whBin$data, verbose = FALSE)
     # loop through each whistle and add to whOut
     whNames <- names(whBinCont)
     for (h in 1:length(whNames)){
