@@ -70,12 +70,14 @@ for (a in seq_along(acStFiles)){
 
 # ------ Save intermediate step -------------------------------------------
 
-save(acStList, file = file.path(path_big_data, paste0('acousticStudyList_',
-                                                      Sys.Date(), '.rda')))
+save(acStList, file = file.path(path_big_data, 
+                                paste0('acousticStudyList_LLHARP_',
+                                       Sys.Date(), '.rda')))
 
-save(evTable, file = file.path(path_big_data, paste0('eventTable_',
+save(evTable, file = file.path(path_big_data, paste0('eventTable_LLHARP_',
                                                      Sys.Date(), '.rda')))
-write.csv(evTable, file = here('data', paste0('eventTable_', Sys.Date(), '.csv')))
+write.csv(evTable, file = here('data', paste0('eventTable_LLHARP_',
+                                              Sys.Date(), '.csv')))
 
 # 71 acoustic studies
 # 634 total events
@@ -87,8 +89,8 @@ write.csv(evTable, file = here('data', paste0('eventTable_', Sys.Date(), '.csv')
 detsFiltAll <- PAMpal::bindStudies(acStList)
 
 # save it - to the dir above dets_filtered
-save(detsFiltAll, file = file.path(path_big_data, 
-                                   paste0('detsFiltAll_LLHARP_', Sys.Date(), '.rda')))
+save(detsFiltAll, file = file.path(path_big_data, paste0('detsFiltAll_LLHARP_', 
+                                                         Sys.Date(), '.rda')))
 
 
 # ------ MANUAL species ID updates OUTSIDE R ------------------------------
@@ -101,7 +103,7 @@ save(detsFiltAll, file = file.path(path_big_data,
 # ------ Read in and clean up new species ID info -------------------------
 
 # read in table with final manual IDs - 634 events
-evTableNew <- read.csv(here('data', paste0('eventTable_', '2024-05-27', 
+evTableNew <- read.csv(here('data', paste0('eventTable_LLHARP_', '2024-05-27', 
                                            '_manualEdits.csv')))
 
 # rename trip col (has recorder string) and make trip column
