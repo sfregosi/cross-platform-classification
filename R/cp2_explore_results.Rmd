@@ -71,6 +71,16 @@ bant.mdl_gl <- bant.mdl
 bant.rf_gl <- getBanterModel(bant.mdl_gl)
 bantData.df_gl <- getBanterModelData(bant.mdl_gl)
 
+# combined model
+modelFile <- file.path(path_models, 'bantMDL_combined_2024-05-29_ss5_nt10k.rda')
+
+load(modelFile)
+bant.mdl_cp <- bant.mdl
+
+bant.rf_cp <- getBanterModel(bant.mdl_cp)
+bantData.df_cp <- getBanterModelData(bant.mdl_cp)
+
+
 
 ```
 
@@ -93,6 +103,12 @@ trainingFile <- file.path('T:/fregosi/cross_platform_banter_big_data',
                           'banterDetsTrain_glider_2024-05-28.rda')
 load(trainingFile) # called banterDetsTrain
 banterDetsTrain_gl <- banterDetsTrain
+
+# glider data
+trainingFile <- file.path('T:/fregosi/cross_platform_banter_big_data',
+                          'banterDetsTrain_combined_2024-05-30.rda')
+load(trainingFile) # called banterDetsTrain
+banterDetsTrain_cp <- banterDetsTrain
 ```
 
 ## Towed array 
@@ -255,22 +271,32 @@ bant.4imp
 banterAllsmall$detectors$Click_Detector_0 <- NULL
 
 # predict on towed array data with towed array model
-score_ta_ta <- banter::predict(bant.mdl_ta, banterAllsmall)
-save(score_ta_ta, file = file.path(path_models, 'predictions_TAbyTA.rda'))
+# score_ta_ta <- banter::predict(bant.mdl_ta, banterAllsmall)
+# save(score_ta_ta, file = file.path(path_models, 'predictions_TAbyTA.rda'))
+load(file.path(path_models, 'predictions_TAbyTA.rda'))
 
 score_ta_ta$validation.matrix
 
 # predict on towed array data with longline model
-score_ta_ll <- banter::predict(bant.mdl_ll, banterAllsmall)
-save(score_ta_ll, file = file.path(path_models, 'predictions_TAbyLL.rda'))
+# score_ta_ll <- banter::predict(bant.mdl_ll, banterAllsmall)
+# save(score_ta_ll, file = file.path(path_models, 'predictions_TAbyLL.rda'))
+load(file.path(path_models, 'predictions_TAbyLL.rda'))
 
 score_ta_ll$validation.matrix
 
 # predict on towed array data with glider model
-score_ta_gl <- banter::predict(bant.mdl_gl, banterAllsmall)
-save(score_ta_gl, file = file.path(path_models, 'predictions_TAbyGL.rda'))
+# score_ta_gl <- banter::predict(bant.mdl_gl, banterAllsmall)
+# save(score_ta_gl, file = file.path(path_models, 'predictions_TAbyGL.rda'))
+load(file.path(path_models, 'predictions_TAbyGL.rda'))
 
 score_ta_gl$validation.matrix
+  
+# predict on towed array data with combined model
+score_ta_cp <- banter::predict(bant.mdl_cp, banterAllsmall)
+save(score_ta_gl, file = file.path(path_models, 'predictions_TAbyCP.rda'))
+load(file.path(path_models, 'predictions_TAbyCP.rda'))
+
+score_ta_cp$validation.matrix
 ```
 
 
@@ -447,22 +473,31 @@ for (u in seq_along(uSp)){
 banterDetsTrain_ll$detectors$Click_Detector_0 <- NULL
 
 # predict on longline data with longline model
-score_ll_ll <- banter::predict(bant.mdl_ll, banterDetsTrain_ll)
-save(score_ll_ll, file = file.path(path_models, 'predictions_LLbyLL.rda'))
-
+# score_ll_ll <- banter::predict(bant.mdl_ll, banterDetsTrain_ll)
+# save(score_ll_ll, file = file.path(path_models, 'predictions_LLbyLL.rda'))
+load(file.path(path_models, 'predictions_LLbyLL.rda'))
 score_ll_ll$validation.matrix
 
 # predict on longline data with towed array model
-score_ll_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_ll)
-save(score_ll_ta, file = file.path(path_models, 'predictions_LLbyTA.rda'))
+# score_ll_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_ll)
+# save(score_ll_ta, file = file.path(path_models, 'predictions_LLbyTA.rda'))
+load(file.path(path_models, 'predictions_LLbyTA.rda'))
 
 score_ll_ta$validation.matrix
 
 # predict on longline data with glider model
-score_ll_gl <- banter::predict(bant.mdl_gl, banterDetsTrain_ll)
-save(score_ll_gl, file = file.path(path_models, 'predictions_LLbyGL.rda'))
+# score_ll_gl <- banter::predict(bant.mdl_gl, banterDetsTrain_ll)
+# save(score_ll_gl, file = file.path(path_models, 'predictions_LLbyGL.rda'))
+load(file.path(path_models, 'predictions_LLbyGL.rda'))
 
 score_ll_gl$validation.matrix
+
+# predict on towed array data with combined model
+score_ll_cp <- banter::predict(bant.mdl_cp, banterDetsTrain_ll)
+save(score_ll_cp, file = file.path(path_models, 'predictions_LLbyCP.rda'))
+load(file.path(path_models, 'predictions_LLbyCP.rda'))
+
+score_ll_cp$validation.matrix
 ```
 
 ## Glider
@@ -637,23 +672,30 @@ for (u in seq_along(uSp)){
 banterDetsTrain_gl$detectors$Click_Detector_0 <- NULL
 
 # predict on glider data with glidermodel
-score_gl_gl <- banter::predict(bant.mdl_gl, banterDetsTrain_gl)
-save(score_gl_gl, file = file.path(path_models, 'predictions_GLbyGL.rda'))
-
+# score_gl_gl <- banter::predict(bant.mdl_gl, banterDetsTrain_gl)
+# save(score_gl_gl, file = file.path(path_models, 'predictions_GLbyGL.rda'))
+load(file.path(path_models, 'predictions_GLbyGL.rda'))
 score_gl_gl$validation.matrix
 
 # predict on glider data with towed array
-score_gl_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_gl)
-save(score_gl_ta, file = file.path(path_models, 'predictions_GLbyTA.rda'))
-
+# score_gl_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_gl)
+# save(score_gl_ta, file = file.path(path_models, 'predictions_GLbyTA.rda'))
+load(file.path(path_models, 'predictions_GLbyTA.rda'))
 score_gl_ta$validation.matrix
 
 
 # predict on glider data with longline
-score_gl_ll <- banter::predict(bant.mdl_ll, banterDetsTrain_gl)
-save(score_gl_ll, file = file.path(path_models, 'predictions_GLbyLL.rda'))
-
+# score_gl_ll <- banter::predict(bant.mdl_ll, banterDetsTrain_gl)
+# save(score_gl_ll, file = file.path(path_models, 'predictions_GLbyLL.rda'))
+load(file.path(path_models, 'predictions_GLbyLL.rda'))
 score_gl_ll$validation.matrix
+
+# predict on towed array data with combined model
+score_gl_cp <- banter::predict(bant.mdl_cp, banterDetsTrain_gl)
+save(score_gl_cp, file = file.path(path_models, 'predictions_GLbyCP.rda'))
+load(file.path(path_models, 'predictions_GLbyCP.rda'))
+
+score_gl_cp$validation.matrix
 ```
 
 ## Combined
@@ -833,22 +875,22 @@ save(score_cp_cp, file = file.path(path_models, 'predictions_CPbyCP.rda'))
 
 score_cp_cp$validation.matrix
 
-# predict on towed array data with combined model
-score_ta_cp <- banter::predict(bant.mdl_cp, banterAllsmall)
-save(score_ta_cp, file = file.path(path_models, 'predictions_TAbyCP.rda'))
-
-score_ta_cp$validation.matrix
-
-# predict on longline data with combined model
-
-score_ll_cp <- banter::predict(bant.mdl_cp, banterDetsTrain_gl)
-save(score_ll_cp, file = file.path(path_models, 'predictions_LLbyCP.rda'))
-
-score_ll_cp$validation.matrix
-
-# predict on glider data with combined model
-score_gl_cp <- banter::predict(bant.mdl_cp, banterDetsTrain_cp)
-save(score_gl_cp, file = file.path(path_models, 'predictions_GLbyCP.rda'))
-
-score_gl_cp$validation.matrix
+# # predict on towed array data with combined model
+# score_ta_cp <- banter::predict(bant.mdl_cp, banterAllsmall)
+# save(score_ta_cp, file = file.path(path_models, 'predictions_TAbyCP.rda'))
+# 
+# score_ta_cp$validation.matrix
+# 
+# # predict on longline data with combined model
+# 
+# score_ll_cp <- banter::predict(bant.mdl_cp, banterDetsTrain_gl)
+# save(score_ll_cp, file = file.path(path_models, 'predictions_LLbyCP.rda'))
+# 
+# score_ll_cp$validation.matrix
+# 
+# # predict on glider data with combined model
+# score_gl_cp <- banter::predict(bant.mdl_cp, banterDetsTrain_cp)
+# save(score_gl_cp, file = file.path(path_models, 'predictions_GLbyCP.rda'))
+# 
+# score_gl_cp$validation.matrix
 ```

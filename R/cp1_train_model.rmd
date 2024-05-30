@@ -41,6 +41,8 @@ library(beepr)
 # path_models <- file.path('Z:/LLHARP/analysis/banterModels')
 path_models <- file.path('T:/fregosi/cross_platform_banter_big_data/models')
 
+path_big_data <- 'T:/fregosi/cross_platform_banter_big_data'
+
 # Re-generate/train model (1) or load existing model to view results (0)
 freshRun <- 1
 ```
@@ -90,6 +92,11 @@ if (freshRun == 1){
   # collapse the data.frames
   allDetectors <- tapply(allDetectors, names(allDetectors), dplyr::bind_rows)
   
+  banterDetsTrain <- list(events = allEvents, detectors = allDetectors)
+  save(banterDetsTrain, file = file.path(path_big_data, 
+                                       paste0('banterDetsTrain_combined_', 
+                                              Sys.Date(), '.rda')))
+  
 } else if (freshRun == 0){
   # modelFile <- file.path(path_models, 'LLHARP_BANTER_2class_2023-05-31.rda')
   modelFile <- file.path(path_models, 'bantMDL_combined_2024-05-28.rda')
@@ -108,18 +115,22 @@ Also, remove any 'Click_Detector_0' detections.
 ```{r clean}
 
 if (freshRun == 1){
-  uSp <- unique(allEvents$species)
+  # uSp <- unique(allEvents$species)
+    uSp <- unique(banterDetsTrain$events$species)
   uSp <- uSp[-which(uSp == 'UO' | uSp == 'Pc')]
   
   for (u in seq_along(uSp)){
-    uSpIdx <- which(allEvents$species == uSp[u])
-    allEvents$species[uSpIdx] <- 'UO'
+    # uSpIdx <- which(allEvents$species == uSp[u])
+    # allEvents$species[uSpIdx] <- 'UO'
+        uSpIdx <- which(banterDetsTrain$events$species == uSp[u])
+    banterDetsTrain$events$species[uSpIdx] <- 'UO'
   }
   
   # unique(allEvents$species)
   
   # Check for click_detector_0 in training dataset
-  allDetectors$Click_Detector_0 <- NULL
+  # allDetectors$Click_Detector_0 <- NULL
+  banterDetsTrain$detectors$Click_Detector_0 <- NULL
 }
 
 ```
@@ -129,10 +140,10 @@ if (freshRun == 1){
 
 if (freshRun == 1){
   # build the model
-  bant.mdl <- initBanterModel(allEvents)
+  bant.mdl <- initBanterModel(banterDetsTrain$events)
   bant.mdl <- addBanterDetector(
     bant.mdl,
-    data =  allDetectors, 
+    data =  banterDetsTrain$detectors, 
     ntree = 10000,
     sampsize = 5,
     importance = TRUE,
