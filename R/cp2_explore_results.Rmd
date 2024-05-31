@@ -17,8 +17,8 @@ knitr::opts_chunk$set(
   echo = TRUE,
   comment = "",
   prompt = FALSE,
-  fig.width = 10,
-  fig.height = 10
+  fig.width = 6,
+  fig.height = 6
 )
 ```
 
@@ -185,7 +185,7 @@ modelPctCorrect(bant.mdl_ta)
 
 **Plot Votes**  
 The strength of a classification model depends on the number of trees that 'voted' for the correct species. We can look at the votes from each of these 5,000 trees for an event to see how many of them were correct. This plot shows these votes where each vertical slice is an event, and the percentage of votes for each species is represented by their color. If all events for a species were to be correctly classified by all of the trees (votes) in the forest, then the plot for that species would be solid in the color that represents that species. 
-```{r plot-votes-ta, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r plot-votes-ta, include=TRUE, fig.width = 6, fig.asp = 0.6}
 # Plot Vote distribution
 plotVotes(bant.rf_ta) 
 ```
@@ -200,13 +200,13 @@ These values will always decrease as the percent of trees threshold increases. T
 
 **Plot Predicted Probabilities**  
 The full distribution of assignment probabilities to the predicted species class can be visualized with the `plotPredictedProbs()` function in `rfPermute`. Ideally, all events would be classified to the correct species (identified by the color), and would be strongly classified to the correct species (higher probablity of assignment). This plot can be used to understand the distribution of these classifications, and how strong the misclassifications were, by species.
-```{r pred-prob-ta, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r pred-prob-ta, include=TRUE, fig.width = 6, fig.asp = 0.6}
 plotPredictedProbs(bant.rf_ta, bins = 30, plot = TRUE)
 ```
 
 **Proximity Plot**  
 The proximity plot provides a visualization of the distribution of events within the tree space. It shows the relative distance of events based on their average distance in nodes in the trees across the forest. For each event in the plot, the color of the central dot represents the true species identity, and the color of the circle represents the _BANTER_ classification. Ideally, these would form rather distinct clusters, one for each species. The wider the spread of the events in this feature space, the more variation found in these predictors. Some species differentiation may be predicted by other predictors and may not be clear based on this pair of dimensions (those may be differentiated with different predictors). 
-```{r prox-plot-ta, include=TRUE, fig.width = 10}
+```{r prox-plot-ta, include=TRUE, fig.width = 6}
 # Proximity Plot
 plotProximity(bant.rf_ta)
 ```
@@ -271,26 +271,26 @@ bant.4imp
 banterAllsmall$detectors$Click_Detector_0 <- NULL
 
 # predict on towed array data with towed array model
-# score_ta_ta <- banter::predict(bant.mdl_ta, banterAllsmall)
-# save(score_ta_ta, file = file.path(path_models, 'predictions_TAbyTA.rda'))
+score_ta_ta <- banter::predict(bant.mdl_ta, banterAllsmall)
+save(score_ta_ta, file = file.path(path_models, 'predictions_TAbyTA.rda'))
 load(file.path(path_models, 'predictions_TAbyTA.rda'))
 
 score_ta_ta$validation.matrix
 
 # predict on towed array data with longline model
-# score_ta_ll <- banter::predict(bant.mdl_ll, banterAllsmall)
-# save(score_ta_ll, file = file.path(path_models, 'predictions_TAbyLL.rda'))
+score_ta_ll <- banter::predict(bant.mdl_ll, banterAllsmall)
+save(score_ta_ll, file = file.path(path_models, 'predictions_TAbyLL.rda'))
 load(file.path(path_models, 'predictions_TAbyLL.rda'))
 
 score_ta_ll$validation.matrix
 
 # predict on towed array data with glider model
-# score_ta_gl <- banter::predict(bant.mdl_gl, banterAllsmall)
-# save(score_ta_gl, file = file.path(path_models, 'predictions_TAbyGL.rda'))
+score_ta_gl <- banter::predict(bant.mdl_gl, banterAllsmall)
+save(score_ta_gl, file = file.path(path_models, 'predictions_TAbyGL.rda'))
 load(file.path(path_models, 'predictions_TAbyGL.rda'))
 
 score_ta_gl$validation.matrix
-  
+
 # predict on towed array data with combined model
 score_ta_cp <- banter::predict(bant.mdl_cp, banterAllsmall)
 save(score_ta_gl, file = file.path(path_models, 'predictions_TAbyCP.rda'))
@@ -376,7 +376,7 @@ modelPctCorrect(bant.mdl_ll)
 
 **Plot Votes**  
 The strength of a classification model depends on the number of trees that 'voted' for the correct species. We can look at the votes from each of these 5,000 trees for an event to see how many of them were correct. This plot shows these votes where each vertical slice is an event, and the percentage of votes for each species is represented by their color. If all events for a species were to be correctly classified by all of the trees (votes) in the forest, then the plot for that species would be solid in the color that represents that species. 
-```{r plot-votes-ll, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r plot-votes-ll, include=TRUE, fig.width = 6, fig.asp = 0.6}
 # Plot Vote distribution
 plotVotes(bant.rf_ll) 
 ```
@@ -391,13 +391,13 @@ These values will always decrease as the percent of trees threshold increases. T
 
 **Plot Predicted Probabilities**  
 The full distribution of assignment probabilities to the predicted species class can be visualized with the `plotPredictedProbs()` function in `rfPermute`. Ideally, all events would be classified to the correct species (identified by the color), and would be strongly classified to the correct species (higher probablity of assignment). This plot can be used to understand the distribution of these classifications, and how strong the misclassifications were, by species.
-```{r pred-prob-ll, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r pred-prob-ll, include=TRUE, fig.width = 6, fig.asp = 0.6}
 plotPredictedProbs(bant.rf_ll, bins = 30, plot = TRUE)
 ```
 
 **Proximity Plot**  
 The proximity plot provides a visualization of the distribution of events within the tree space. It shows the relative distance of events based on their average distance in nodes in the trees across the forest. For each event in the plot, the color of the central dot represents the true species identity, and the color of the circle represents the _BANTER_ classification. Ideally, these would form rather distinct clusters, one for each species. The wider the spread of the events in this feature space, the more variation found in these predictors. Some species differentiation may be predicted by other predictors and may not be clear based on this pair of dimensions (those may be differentiated with different predictors). 
-```{r prox-plot-ll, include=TRUE, fig.width = 10}
+```{r prox-plot-ll, include=TRUE, fig.width = 6}
 # Proximity Plot
 plotProximity(bant.rf_ll)
 ```
@@ -473,21 +473,21 @@ for (u in seq_along(uSp)){
 banterDetsTrain_ll$detectors$Click_Detector_0 <- NULL
 
 # predict on longline data with longline model
-# score_ll_ll <- banter::predict(bant.mdl_ll, banterDetsTrain_ll)
-# save(score_ll_ll, file = file.path(path_models, 'predictions_LLbyLL.rda'))
+score_ll_ll <- banter::predict(bant.mdl_ll, banterDetsTrain_ll)
+save(score_ll_ll, file = file.path(path_models, 'predictions_LLbyLL.rda'))
 load(file.path(path_models, 'predictions_LLbyLL.rda'))
 score_ll_ll$validation.matrix
 
 # predict on longline data with towed array model
-# score_ll_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_ll)
-# save(score_ll_ta, file = file.path(path_models, 'predictions_LLbyTA.rda'))
+score_ll_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_ll)
+save(score_ll_ta, file = file.path(path_models, 'predictions_LLbyTA.rda'))
 load(file.path(path_models, 'predictions_LLbyTA.rda'))
 
 score_ll_ta$validation.matrix
 
 # predict on longline data with glider model
-# score_ll_gl <- banter::predict(bant.mdl_gl, banterDetsTrain_ll)
-# save(score_ll_gl, file = file.path(path_models, 'predictions_LLbyGL.rda'))
+score_ll_gl <- banter::predict(bant.mdl_gl, banterDetsTrain_ll)
+save(score_ll_gl, file = file.path(path_models, 'predictions_LLbyGL.rda'))
 load(file.path(path_models, 'predictions_LLbyGL.rda'))
 
 score_ll_gl$validation.matrix
@@ -575,7 +575,7 @@ modelPctCorrect(bant.mdl_gl)
 
 **Plot Votes**  
 The strength of a classification model depends on the number of trees that 'voted' for the correct species. We can look at the votes from each of these 5,000 trees for an event to see how many of them were correct. This plot shows these votes where each vertical slice is an event, and the percentage of votes for each species is represented by their color. If all events for a species were to be correctly classified by all of the trees (votes) in the forest, then the plot for that species would be solid in the color that represents that species. 
-```{r plot-votes-gl, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r plot-votes-gl, include=TRUE, fig.width = 6, fig.asp = 0.6}
 # Plot Vote distribution
 plotVotes(bant.rf_gl) 
 ```
@@ -590,13 +590,13 @@ These values will always decrease as the percent of trees threshold increases. T
 
 **Plot Predicted Probabilities**  
 The full distribution of assignment probabilities to the predicted species class can be visualized with the `plotPredictedProbs()` function in `rfPermute`. Ideally, all events would be classified to the correct species (identified by the color), and would be strongly classified to the correct species (higher probablity of assignment). This plot can be used to understand the distribution of these classifications, and how strong the misclassifications were, by species.
-```{r pred-prob-gl, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r pred-prob-gl, include=TRUE, fig.width = 6, fig.asp = 0.6}
 plotPredictedProbs(bant.rf_gl, bins = 30, plot = TRUE)
 ```
 
 **Proximity Plot**  
 The proximity plot provides a visualization of the distribution of events within the tree space. It shows the relative distance of events based on their average distance in nodes in the trees across the forest. For each event in the plot, the color of the central dot represents the true species identity, and the color of the circle represents the _BANTER_ classification. Ideally, these would form rather distinct clusters, one for each species. The wider the spread of the events in this feature space, the more variation found in these predictors. Some species differentiation may be predicted by other predictors and may not be clear based on this pair of dimensions (those may be differentiated with different predictors). 
-```{r prox-plot-gl, include=TRUE, fig.width = 10}
+```{r prox-plot-gl, include=TRUE, fig.width = 6}
 # Proximity Plot
 plotProximity(bant.rf_gl)
 ```
@@ -672,21 +672,21 @@ for (u in seq_along(uSp)){
 banterDetsTrain_gl$detectors$Click_Detector_0 <- NULL
 
 # predict on glider data with glidermodel
-# score_gl_gl <- banter::predict(bant.mdl_gl, banterDetsTrain_gl)
-# save(score_gl_gl, file = file.path(path_models, 'predictions_GLbyGL.rda'))
+score_gl_gl <- banter::predict(bant.mdl_gl, banterDetsTrain_gl)
+save(score_gl_gl, file = file.path(path_models, 'predictions_GLbyGL.rda'))
 load(file.path(path_models, 'predictions_GLbyGL.rda'))
 score_gl_gl$validation.matrix
 
 # predict on glider data with towed array
-# score_gl_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_gl)
-# save(score_gl_ta, file = file.path(path_models, 'predictions_GLbyTA.rda'))
+score_gl_ta <- banter::predict(bant.mdl_ta, banterDetsTrain_gl)
+save(score_gl_ta, file = file.path(path_models, 'predictions_GLbyTA.rda'))
 load(file.path(path_models, 'predictions_GLbyTA.rda'))
 score_gl_ta$validation.matrix
 
 
 # predict on glider data with longline
-# score_gl_ll <- banter::predict(bant.mdl_ll, banterDetsTrain_gl)
-# save(score_gl_ll, file = file.path(path_models, 'predictions_GLbyLL.rda'))
+score_gl_ll <- banter::predict(bant.mdl_ll, banterDetsTrain_gl)
+save(score_gl_ll, file = file.path(path_models, 'predictions_GLbyLL.rda'))
 load(file.path(path_models, 'predictions_GLbyLL.rda'))
 score_gl_ll$validation.matrix
 
@@ -773,7 +773,7 @@ modelPctCorrect(bant.mdl_cp)
 
 **Plot Votes**  
 The strength of a classification model depends on the number of trees that 'voted' for the correct species. We can look at the votes from each of these 5,000 trees for an event to see how many of them were correct. This plot shows these votes where each vertical slice is an event, and the percentage of votes for each species is represented by their color. If all events for a species were to be correctly classified by all of the trees (votes) in the forest, then the plot for that species would be solid in the color that represents that species. 
-```{r plot-votes-cp, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r plot-votes-cp, include=TRUE, fig.width = 6, fig.asp = 0.6}
 # Plot Vote distribution
 plotVotes(bant.rf_cp) 
 ```
@@ -788,13 +788,13 @@ These values will always decrease as the percent of trees threshold increases. T
 
 **Plot Predicted Probabilities**  
 The full distribution of assignment probabilities to the predicted species class can be visualized with the `plotPredictedProbs()` function in `rfPermute`. Ideally, all events would be classified to the correct species (identified by the color), and would be stroncpy classified to the correct species (higher probablity of assignment). This plot can be used to understand the distribution of these classifications, and how strong the misclassifications were, by species.
-```{r pred-prob-cp, include=TRUE, fig.width = 10, fig.asp = 0.6}
+```{r pred-prob-cp, include=TRUE, fig.width = 6, fig.asp = 0.6}
 plotPredictedProbs(bant.rf_cp, bins = 30, plot = TRUE)
 ```
 
 **Proximity Plot**  
 The proximity plot provides a visualization of the distribution of events within the tree space. It shows the relative distance of events based on their average distance in nodes in the trees across the forest. For each event in the plot, the color of the central dot represents the true species identity, and the color of the circle represents the _BANTER_ classification. Ideally, these would form rather distinct clusters, one for each species. The wider the spread of the events in this feature space, the more variation found in these predictors. Some species differentiation may be predicted by other predictors and may not be clear based on this pair of dimensions (those may be differentiated with different predictors). 
-```{r prox-plot-cp, include=TRUE, fig.width = 10}
+```{r prox-plot-cp, include=TRUE, fig.width = 6}
 # Proximity Plot
 plotProximity(bant.rf_cp)
 ```
