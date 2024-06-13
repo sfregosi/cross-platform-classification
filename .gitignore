@@ -1,10 +1,23 @@
+# =========================
+# Protected Information
+# =========================
+/R/secrets/
+
+
+# =========================
+# Large Files
+# =========================
+
+
+# =========================
+# R-specific Files
+# =========================
 # History files
 .Rhistory
 .Rapp.history
 
 # Session Data files
 .RData
-.RDataTmp
 
 # User-specific files
 .Ruserdata
@@ -39,13 +52,4 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
 
-# translation temp files
-po/*~
-
-# RStudio Connect folder
-rsconnect/
-
-thumbs.db
