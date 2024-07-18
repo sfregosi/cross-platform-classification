@@ -35,7 +35,7 @@ library(tidyverse)
 
 # ------ USER DEFINED INPUTS ----------------------------------------------
 # define glider mission and PG version
-mission <- 'sg639_MHI_Apr2023'
+mission <- 'sg679_MHI_May2023'
 pgVer <- '20207b'
 
 # define transfer function
@@ -69,10 +69,10 @@ binDir <- file.path(path_pg, 'binaries', paste0(pgVerPrfx, '_glider_banter_',
 dbFile <- file.path(path_pg, 'databases', paste0(pgVerPrfx, '_glider_banter_', 
                                                    mission, '.sqlite3'))
 # merged triton log file
+logFile <- file.path(path_analysis, 'triton', 'merged_logs',
+                          paste0(mission, '_log_merged.csv'))
 # logFile <- file.path(path_analysis, 'triton', 'merged_logs', 
-#                           paste0(mission, '_log_merged.csv'))
-logFile <- file.path(path_analysis, 'triton', 'merged_logs', 
-                     paste0(mission, '_log_merged_edits_2024-05-28.csv'))
+#                      paste0(mission, '_log_merged_edits_2024-05-28.csv'))
 
 # files to be created
 paramFile <- file.path(path_analysis, 'classification', 'params', 

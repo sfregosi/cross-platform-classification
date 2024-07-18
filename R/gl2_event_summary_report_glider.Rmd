@@ -15,7 +15,7 @@ editor_options:
   # USER DEFINED PARAMS BELOW #
   chunk_output_type: console
 params: 
-  mission: sg639_MHI_Apr2023 # for report printing/building filenames
+  mission: sg679_MHI_May2023 # for report printing/building filenames
   pgver: pam20207b # string e.g., pam20207b, doesn't need quotations, for making file names
   path_pg: 'T:/glider_MHI_analysis/pamguard' # must use drive letter (not //)
   path_dets: 'T:/glider_MHI_analysis/classification' # path to AcousticStudies
