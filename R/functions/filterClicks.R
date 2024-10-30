@@ -4,7 +4,7 @@ filterClicks <- function(as){
   #' @description  
   #' 
   #' author: Selene Fregosi selene.fregosi [at] noaa.gov
-  #' last udpated: 19 April 2024
+  #' last updated: 19 April 2024
   #'
   #' @param as AcousticStudy object generated with processPgDetections()
   #' 
